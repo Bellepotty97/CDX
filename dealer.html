@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สมัครและเข้าสู่ระบบตัวแทนจำหน่าย | PEM Dealer Management</title>
+<meta name="description" content="ลงทะเบียนเป็นตัวแทนจำหน่ายสินค้า PEM และเข้าสู่ระบบ Dealer Management Platform">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dealer.css">
+<style>
+.topbar{background:var(--blue-deep);color:#bcd6ea;font-size:.85rem}
+.topbar .wrap{display:flex;align-items:center;gap:18px;height:40px}
+.topbar a:hover{color:#fff}
+.topbar .sp{margin-left:auto}
+.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:26px;flex-wrap:wrap}
+.tab{background:none;border:0;border-bottom:3px solid transparent;padding:12px 18px;font-family:inherit;
+  font-size:.98rem;font-weight:600;color:var(--muted);cursor:pointer;margin-bottom:-1px}
+.tab:hover{color:var(--blue)}
+.tab[aria-selected=true]{color:var(--blue-dark);border-bottom-color:var(--orange)}
+.panel[hidden]{display:none}
+main{padding-block:38px 60px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;position:relative}
+.step b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;
+  font-size:.82rem;margin-bottom:9px}
+.step h3{font-size:.94rem}
+.step p{color:var(--muted);font-size:.84rem;margin-top:4px}
+.step.is-now{border-color:var(--orange);box-shadow:0 0 0 2px rgba(245,130,32,.15)}
+.step.is-now b{background:var(--orange)}
+.grouplist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
+.gopt{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;cursor:pointer;background:var(--surface);
+  display:flex;gap:11px;align-items:flex-start}
+.gopt:hover{border-color:var(--blue)}
+.gopt input{margin-top:5px;flex:none;width:16px;height:16px;accent-color:var(--blue)}
+.gopt h4{font-size:.92rem}
+.gopt p{color:var(--muted);font-size:.82rem;margin-top:3px}
+.gopt:has(input:checked){border-color:var(--blue);background:var(--tint)}
+.tierbox{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.tiercard{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;background:var(--surface)}
+.tiercard h4{font-size:.95rem;color:var(--blue-dark)}
+.tiercard .d{font-size:1.4rem;font-weight:700;color:var(--orange);line-height:1.2;margin:6px 0 2px}
+.tiercard p{font-size:.8rem;color:var(--muted)}
+.loginwrap{max-width:430px;margin:0 auto}
+.demo{background:#fdf3e0;border:1px solid #f0d8ae;border-radius:var(--r);padding:14px 16px;font-size:.86rem;
+  color:#7a4d06;margin-bottom:20px}
+.demo code{background:#fff;border:1px solid #e6d3ae;border-radius:4px;padding:1px 7px;font-weight:600}
+.done{background:#e6f4ed;border:1px solid #b7ddc9;border-radius:var(--r);padding:22px 24px}
+.done h3{color:var(--ok);font-size:1.1rem}
+.done p{color:#2c5d47;font-size:.92rem;margin-top:8px}
+.done .ref{font-size:1.25rem;font-weight:700;color:var(--ink);margin-top:12px;letter-spacing:.02em}
+.err{color:var(--bad);font-size:.88rem;margin-top:12px}
+.fset{border:0;padding:0;margin:0 0 8px}
+.fset>legend{font-size:.92rem;font-weight:600;color:var(--blue-dark);padding:0;margin-bottom:12px;
+  border-bottom:1px solid var(--line);width:100%;padding-bottom:8px}
+@media (max-width:900px){.steps{grid-template-columns:1fr 1fr}.tierbox{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.grouplist{grid-template-columns:1fr}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}.tierbox{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a href="precise-pcc-pem.html">&larr; กลับหน้าเว็บหลัก</a>
+    <span class="sp"></span>
+    <a href="tel:0922836660">092-283-6660 (ฝ่ายขาย)</a>
+  </div>
+</div>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>ตัวแทนจำหน่ายสินค้า PEM</h1>
+    <p>ลงทะเบียนเพื่อให้ฝ่ายขายติดต่อกลับและยืนยันข้อมูล หลังผ่านการตรวจสอบจะได้รับบัญชีเข้าใช้
+       Dealer Management Platform สำหรับดูราคาตามระดับของตัวเอง สั่งซื้อ ติดตามสถานะ และดูเป้าหมายยอดขาย</p>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-reg"   aria-controls="panel-reg"   aria-selected="true">สมัครเป็นตัวแทนจำหน่าย</button>
+    <button class="tab" role="tab" id="tab-login" aria-controls="panel-login" aria-selected="false">เข้าสู่ระบบ</button>
+  </div>
+
+  <!-- ============ สมัคร ============ -->
+  <section class="panel" id="panel-reg" role="tabpanel" aria-labelledby="tab-reg">
+
+    <div class="steps">
+      <div class="step is-now"><b>1</b><h3>ลงทะเบียน</h3><p>กรอกข้อมูลบริษัทและผู้ติดต่อในหน้านี้</p></div>
+      <div class="step"><b>2</b><h3>ฝ่ายขายติดต่อกลับ</h3><p>ตรวจเอกสารและยืนยันข้อมูลภายใน 3 วันทำการ</p></div>
+      <div class="step"><b>3</b><h3>จัดกลุ่มและระดับ</h3><p>กำหนด Group และ Tier ที่ใช้คิดราคาและเครดิต</p></div>
+      <div class="step"><b>4</b><h3>เปิดบัญชีเข้าระบบ</h3><p>ได้ชื่อผู้ใช้เข้า Dealer Management Platform</p></div>
+    </div>
+
+    <div class="card" id="regcard">
+      <h2>แบบฟอร์มลงทะเบียนตัวแทนจำหน่าย</h2>
+      <p>เครื่องหมาย <span style="color:var(--bad)">*</span> คือข้อมูลที่จำเป็นสำหรับการตรวจสอบ</p>
+
+      <form id="regform" style="margin-top:22px" novalidate>
+        <fieldset class="fset">
+          <legend>ข้อมูลนิติบุคคล</legend>
+          <label class="field"><span class="req">ชื่อนิติบุคคล</span>
+            <input type="text" name="company" required placeholder="เช่น บริษัท ตัวอย่างการค้า จำกัด"></label>
+          <div class="grid2">
+            <label class="field"><span class="req">เลขทะเบียนนิติบุคคล 13 หลัก</span>
+              <input type="text" name="taxId" required inputmode="numeric" maxlength="13" placeholder="0105xxxxxxxxx"></label>
+            <label class="field"><span>ปีที่ก่อตั้ง</span>
+              <input type="number" name="since" min="2400" max="2600" placeholder="2560"></label>
+          </div>
+          <label class="field"><span class="req">ที่อยู่ตามหนังสือรับรอง</span>
+            <textarea name="address" required placeholder="บ้านเลขที่ ถนน ตำบล อำเภอ จังหวัด รหัสไปรษณีย์"></textarea></label>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>ผู้ติดต่อ</legend>
+          <div class="grid2">
+            <label class="field"><span class="req">ชื่อ-นามสกุล</span><input type="text" name="contact" required></label>
+            <label class="field"><span>ตำแหน่ง</span><input type="text" name="position" placeholder="เช่น ผู้จัดการฝ่ายจัดซื้อ"></label>
+            <label class="field"><span class="req">เบอร์โทรศัพท์</span><input type="tel" name="phone" required placeholder="08x-xxx-xxxx"></label>
+            <label class="field"><span class="req">อีเมล</span><input type="email" name="email" required></label>
+          </div>
+          <label class="field"><span>LINE ID <span class="hint">ถ้ามี</span></span><input type="text" name="line"></label>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>ประเภทคู่ค้าที่สนใจ</legend>
+          <p style="color:var(--muted);font-size:.86rem;margin-bottom:12px">
+            เลือกกลุ่มที่ตรงกับลักษณะธุรกิจของท่านมากที่สุด กลุ่มที่ได้จริงจะกำหนดโดยฝ่ายขายหลังการตรวจสอบ</p>
+          <div class="grouplist" id="grouplist"></div>
+          <label class="field" id="peafield" hidden style="margin-top:14px">
+            <span class="req">เขตการไฟฟ้าที่ต้องการเข้างาน</span>
+            <input type="text" name="peaAreas" placeholder="เช่น กฟจ.นนทบุรี, กฟอ.ปากเกร็ด">
+            <span class="hint">กลุ่ม Dealer-PEA Regional ต้องระบุ เพื่อใช้ออกหนังสือแต่งตั้งรายงาน</span></label>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>ข้อมูลประกอบการประเมินระดับ (Tier)</legend>
+          <div class="grid3">
+            <label class="field"><span>ทุนจดทะเบียน (บาท)</span><input type="number" name="capital" min="0" step="100000"></label>
+            <label class="field"><span>ประสบการณ์ในธุรกิจไฟฟ้า (ปี)</span><input type="number" name="exp" min="0" max="99"></label>
+            <label class="field"><span>ยอดซื้อคาดการณ์ปีแรก (บาท)</span><input type="number" name="forecast" min="0" step="100000"></label>
+          </div>
+          <label class="field"><span>พื้นที่จำหน่าย</span>
+            <input type="text" name="area" placeholder="เช่น นนทบุรี ปทุมธานี พระนครศรีอยุธยา"></label>
+          <label class="field"><span>กลุ่มสินค้าที่สนใจ</span>
+            <select name="interest" id="interest" multiple size="6"></select>
+            <span class="hint">กด Ctrl (Windows) หรือ Command (Mac) ค้างไว้เพื่อเลือกหลายรายการ</span></label>
+          <label class="field"><span>ผลงานอ้างอิง</span>
+            <textarea name="ref" placeholder="โครงการที่เคยส่งมอบ ลูกค้าอ้างอิง หรือประสบการณ์ที่เกี่ยวข้อง"></textarea></label>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>เอกสารประกอบ</legend>
+          <p style="color:var(--muted);font-size:.86rem;margin-bottom:12px">
+            แนบได้ภายหลังทางอีเมลถ้ายังไม่พร้อม แต่ต้องครบก่อนเปิดบัญชี</p>
+          <div class="grid3">
+            <label class="field"><span>หนังสือรับรองบริษัท</span><input type="file" name="docCert" accept=".pdf,.jpg,.png"></label>
+            <label class="field"><span>ภ.พ.20</span><input type="file" name="docVat" accept=".pdf,.jpg,.png"></label>
+            <label class="field"><span>บัตรประชาชนผู้มีอำนาจ</span><input type="file" name="docId" accept=".pdf,.jpg,.png"></label>
+          </div>
+        </fieldset>
+
+        <label class="checkrow" style="margin:6px 0 18px">
+          <input type="checkbox" name="pdpa" required>
+          <span>ข้าพเจ้ายินยอมให้บริษัท พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง จำกัด เก็บรวบรวม ใช้ และเปิดเผยข้อมูล
+            ที่ให้ไว้ เพื่อพิจารณาการแต่งตั้งตัวแทนจำหน่ายและติดต่อกลับ ตาม
+            <a href="https://precise.co.th/corporate-governance/privacy-rights/" target="_blank" rel="noopener"
+               style="color:var(--blue);text-decoration:underline">นโยบายความเป็นส่วนตัว</a>
+            <span class="req" style="font-size:0"></span></span>
+        </label>
+
+        <button class="btn btn--orange" type="submit">ส่งใบสมัคร</button>
+        <p class="err" id="regerr" hidden></p>
+      </form>
+    </div>
+
+    <div class="card" id="regdone" hidden>
+      <div class="done">
+        <h3>รับใบสมัครเรียบร้อยแล้ว</h3>
+        <p>ฝ่ายขายจะติดต่อกลับภายใน 3 วันทำการ เพื่อยืนยันข้อมูลและนัดตรวจเอกสาร
+           เมื่อผ่านการตรวจสอบจะได้รับชื่อผู้ใช้สำหรับเข้า Dealer Management Platform ทางอีเมลที่ลงทะเบียนไว้</p>
+        <p class="ref">เลขที่คำขอ <span id="refno"></span></p>
+      </div>
+      <p style="color:var(--muted);font-size:.86rem;margin-top:16px">
+        <span class="ph" title="ยังไม่ได้เชื่อมกับระบบหลังบ้าน ข้อมูลที่กรอกยังไม่ถูกบันทึกที่ใด">
+        หน้าสาธิต ข้อมูลยังไม่ถูกส่งไปที่ระบบใด</span></p>
+    </div>
+
+    <div class="card">
+      <h2>ระดับคู่ค้า (Tier) และวิธีประเมิน</h2>
+      <p>ผู้สมัครใหม่ทุกรายเริ่มที่ Standard ฝ่ายขายอาจประเมินให้สูงกว่านั้นตั้งแต่ครั้งแรกจากข้อมูลที่กรอกไว้
+         หลังจากนั้นระบบทบทวนระดับให้อัตโนมัติทุกไตรมาส จากยอดซื้อที่ชำระแล้วย้อนหลัง 12 เดือน</p>
+      <div class="tierbox" id="tierbox"></div>
+      <h3 style="font-size:1rem;margin:24px 0 12px;color:var(--blue-dark)">เกณฑ์ที่ฝ่ายขายใช้ประเมินครั้งแรก</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>หัวข้อ</th><th class="num">น้ำหนัก</th><th>รายละเอียด</th></tr></thead>
+          <tbody id="critbody"></tbody>
+        </table>
+      </div>
+      <p style="color:var(--muted);font-size:.84rem;margin-top:14px">
+        <span class="ph" title="รอฝ่ายขายยืนยันเกณฑ์และส่วนลดจริง ตัวเลขนี้เป็นข้อเสนอเพื่อพิจารณา">
+        ส่วนลดและเกณฑ์ทั้งหมดเป็นข้อเสนอเพื่อพิจารณา ยังไม่ใช่เงื่อนไขทางการค้าจริง</span></p>
+    </div>
+  </section>
+
+  <!-- ============ เข้าสู่ระบบ ============ -->
+  <section class="panel" id="panel-login" role="tabpanel" aria-labelledby="tab-login" hidden>
+    <div class="loginwrap">
+      <div class="card">
+        <h2>เข้าสู่ระบบตัวแทนจำหน่าย</h2>
+        <p>สำหรับคู่ค้าที่ผ่านการตรวจสอบและได้รับบัญชีแล้ว</p>
+
+        <div class="demo" style="margin-top:20px">
+          บัญชีสาธิต — ผู้ใช้ <code>Dealer1</code> รหัสผ่าน <code>Password</code><br>
+          <span style="font-size:.82rem">ระบบจริงต้องยืนยันตัวตนที่ฝั่งเซิร์ฟเวอร์ หน้านี้ตรวจรหัสในเบราว์เซอร์เพื่อสาธิตเท่านั้น</span>
+        </div>
+
+        <form id="loginform" novalidate>
+          <label class="field"><span class="req">ชื่อผู้ใช้</span>
+            <input type="text" name="user" autocomplete="username" required></label>
+          <label class="field"><span class="req">รหัสผ่าน</span>
+            <input type="password" name="pass" autocomplete="current-password" required></label>
+          <label class="checkrow" style="margin-bottom:18px">
+            <input type="checkbox" name="remember"><span>จดจำการเข้าสู่ระบบบนเครื่องนี้</span></label>
+          <button class="btn btn--solid" type="submit" style="width:100%">เข้าสู่ระบบ</button>
+          <p class="err" id="loginerr" hidden></p>
+        </form>
+
+        <p style="margin-top:18px;font-size:.88rem;color:var(--muted)">
+          ยังไม่มีบัญชี? <a href="#" id="gotoreg" style="color:var(--blue);font-weight:600">สมัครเป็นตัวแทนจำหน่าย</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="data/dealer-config.js"></script>
+<script src="data/catalog.js"></script>
+<script>
+const D = window.PEM_DEALER;
+
+/* ---------- แท็บ ---------- */
+const tabs = [['tab-reg','panel-reg'], ['tab-login','panel-login']];
+function showTab(id){
+  tabs.forEach(([t,p])=>{
+    const on = t===id;
+    document.getElementById(t).setAttribute('aria-selected', on);
+    document.getElementById(p).hidden = !on;
+  });
+  if (location.hash.slice(1) !== id) history.replaceState(null,'','#'+id);
+}
+tabs.forEach(([t])=>document.getElementById(t).addEventListener('click',()=>showTab(t)));
+document.getElementById('gotoreg').addEventListener('click',e=>{e.preventDefault();showTab('tab-reg');window.scrollTo({top:0})});
+if (location.hash === '#tab-login') showTab('tab-login');
+
+/* ---------- กลุ่มคู่ค้า ---------- */
+document.getElementById('grouplist').innerHTML = D.groups.map((g,i)=>`
+  <label class="gopt">
+    <input type="radio" name="group" value="${g.id}"${i===2?' checked':''}>
+    <span><h4>${g.name}</h4><p>${g.desc}</p></span>
+  </label>`).join('');
+const peaField = document.getElementById('peafield');
+function syncPea(){
+  const v = document.querySelector('input[name=group]:checked');
+  peaField.hidden = !v || v.value !== 'pea';
+}
+document.getElementById('grouplist').addEventListener('change', syncPea);
+syncPea();
+
+/* ---------- ตาราง Tier ---------- */
+document.getElementById('tierbox').innerHTML = D.tiers.map(t=>`
+  <div class="tiercard">
+    <h4>${t.id} · ${t.name}</h4>
+    <div class="d">${(t.disc*100).toFixed(0)}%</div>
+    <p>ส่วนลดเพิ่มจากราคากลุ่ม</p>
+    <p style="margin-top:8px">${t.note}</p>
+    <p style="margin-top:6px">${t.credit}</p>
+  </div>`).join('');
+document.getElementById('critbody').innerHTML = D.firstTierCriteria.map(c=>`
+  <tr><td>${c.label}</td><td class="num">${c.w}%</td><td>${c.detail}</td></tr>`).join('');
+
+/* ---------- กลุ่มสินค้าที่สนใจ : ดึงจากแคตตาล็อกจริง ---------- */
+document.getElementById('interest').innerHTML =
+  window.PEM_CATALOG.core.slice().sort((a,b)=>a.localeCompare(b))
+    .map(c=>`<option value="${c}">${c}</option>`).join('');
+
+/* ---------- ส่งใบสมัคร ---------- */
+document.getElementById('regform').addEventListener('submit', e=>{
+  e.preventDefault();
+  const f = e.target, err = document.getElementById('regerr');
+  if (!f.checkValidity()){
+    err.textContent = 'กรุณากรอกข้อมูลที่จำเป็นให้ครบ และยินยอมให้เก็บข้อมูลก่อนส่งใบสมัคร';
+    err.hidden = false;
+    const bad = f.querySelector(':invalid');
+    if (bad){ bad.focus(); bad.scrollIntoView({block:'center'}); }
+    return;
+  }
+  err.hidden = true;
+  const ref = 'DR-69-' + String(Math.floor(Math.random()*9000)+1000);
+  document.getElementById('refno').textContent = ref;
+  document.getElementById('regcard').hidden = true;
+  document.getElementById('regdone').hidden = false;
+  window.scrollTo({top:0,behavior:'smooth'});
+  // ระบบจริงส่ง payload นี้เข้า crm.lead ของ Odoo พร้อมบันทึกหลักฐานการยินยอม
+  console.log('dealer registration', {
+    ref, consentAt:new Date().toISOString(), consentVersion:'2569-09', source:location.href,
+    ...Object.fromEntries(new FormData(f).entries())
+  });
+});
+
+/* ---------- เข้าสู่ระบบ (สาธิต) ---------- */
+document.getElementById('loginform').addEventListener('submit', e=>{
+  e.preventDefault();
+  const f = e.target, err = document.getElementById('loginerr');
+  const u = f.user.value.trim(), p = f.pass.value;
+  if (u === D.demoAccount.user && p === D.demoAccount.pass){
+    const store = f.remember.checked ? localStorage : sessionStorage;
+    try { store.setItem('pem_dealer_session', D.demoAccount.user); } catch (_) {}
+    location.href = 'dealer-portal.html';
+  } else {
+    err.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (บัญชีสาธิตคือ Dealer1 / Password)';
+    err.hidden = false;
+  }
+});
+</script>
+</body>
+</html>

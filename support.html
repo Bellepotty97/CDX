@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แจ้งปัญหา ข้อร้องเรียน ข้อเสนอแนะ | PEM</title>
+<meta name="description" content="แจ้งปัญหาหลังการขาย ข้อร้องเรียน หรือข้อเสนอแนะ ถึงบริษัท พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง จำกัด">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dealer.css">
+<style>
+.topbar{background:var(--blue-deep);color:#bcd6ea;font-size:.85rem}
+.topbar .wrap{display:flex;align-items:center;gap:18px;height:40px}
+.topbar a:hover{color:#fff}
+.topbar .sp{margin-left:auto}
+main{padding-block:38px 60px;max-width:760px}
+.kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:6px}
+.kopt{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;cursor:pointer;background:var(--surface);
+  display:flex;gap:11px;align-items:flex-start}
+.kopt:hover{border-color:var(--blue)}
+.kopt input{margin-top:5px;flex:none;width:16px;height:16px;accent-color:var(--blue)}
+.kopt h4{font-size:.92rem}
+.kopt p{color:var(--muted);font-size:.8rem;margin-top:3px}
+.kopt:has(input:checked){border-color:var(--blue);background:var(--tint)}
+.done{background:#e6f4ed;border:1px solid #b7ddc9;border-radius:var(--r);padding:22px 24px}
+.done h3{color:var(--ok);font-size:1.1rem}
+.done p{color:#2c5d47;font-size:.92rem;margin-top:8px}
+.done .ref{font-size:1.25rem;font-weight:700;color:var(--ink);margin-top:12px}
+.err{color:var(--bad);font-size:.88rem;margin-top:12px}
+@media (max-width:640px){.kinds{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a href="precise-pcc-pem.html">&larr; กลับหน้าเว็บหลัก</a>
+    <span class="sp"></span>
+    <a href="tel:0922836660">092-283-6660 (ฝ่ายขาย)</a>
+  </div>
+</div>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>แจ้งปัญหา ข้อร้องเรียน ข้อเสนอแนะ</h1>
+    <p>ช่องทางเดียวกันสำหรับลูกค้าทั่วไปและตัวแทนจำหน่าย ทุกเรื่องที่แจ้งเข้ามาจะมีเลขที่อ้างอิง
+       และมีผู้รับผิดชอบติดตามจนปิดเรื่อง</p>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="card" id="formcard">
+    <h2>รายละเอียดเรื่องที่แจ้ง</h2>
+    <p>เครื่องหมาย <span style="color:var(--bad)">*</span> คือข้อมูลที่จำเป็น</p>
+
+    <form id="sform" style="margin-top:20px" novalidate>
+      <div class="field"><span class="req">ประเภทเรื่อง</span>
+        <div class="kinds">
+          <label class="kopt"><input type="radio" name="kind" value="ปัญหา" checked>
+            <span><h4>แจ้งปัญหา</h4><p>สินค้าชำรุด ส่งไม่ครบ ใช้งานไม่ได้</p></span></label>
+          <label class="kopt"><input type="radio" name="kind" value="ร้องเรียน">
+            <span><h4>ข้อร้องเรียน</h4><p>การให้บริการ การส่งมอบ เอกสาร</p></span></label>
+          <label class="kopt"><input type="radio" name="kind" value="ข้อเสนอแนะ">
+            <span><h4>ข้อเสนอแนะ</h4><p>สิ่งที่อยากให้ปรับปรุงหรือเพิ่มเติม</p></span></label>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <label class="field"><span class="req">ชื่อ-นามสกุล</span><input type="text" name="name" required></label>
+        <label class="field"><span>บริษัท / หน่วยงาน</span><input type="text" name="company"></label>
+        <label class="field"><span class="req">เบอร์โทรศัพท์</span><input type="tel" name="phone" required></label>
+        <label class="field"><span class="req">อีเมล</span><input type="email" name="email" required></label>
+      </div>
+
+      <label class="field"><span>ติดต่อในฐานะ</span>
+        <select name="role">
+          <option>ลูกค้า</option><option>ตัวแทนจำหน่าย</option>
+          <option>ผู้รับเหมา</option><option>หน่วยงานราชการ / รัฐวิสาหกิจ</option><option>อื่น ๆ</option>
+        </select></label>
+
+      <label class="field"><span>เลขที่อ้างอิง <span class="hint">เลขที่คำสั่งซื้อ ใบส่งของ หรือใบแจ้งหนี้ ถ้ามี</span></span>
+        <input type="text" name="ref" id="refInput" placeholder="เช่น SO-69-0468"></label>
+
+      <label class="field"><span>รหัสสินค้าที่เกี่ยวข้อง</span>
+        <input type="text" name="product" placeholder="เช่น CA-F-99-010101"></label>
+
+      <label class="field"><span class="req">รายละเอียด</span>
+        <textarea name="detail" required style="min-height:140px"
+          placeholder="เล่าสิ่งที่เกิดขึ้น วันเวลา และผลกระทบ ยิ่งละเอียดยิ่งช่วยให้แก้ไขได้เร็ว"></textarea></label>
+
+      <label class="field"><span>ไฟล์แนบ <span class="hint">รูปถ่ายหรือเอกสารประกอบ</span></span>
+        <input type="file" name="file" accept=".pdf,.jpg,.jpeg,.png" multiple></label>
+
+      <label class="checkrow" style="margin:6px 0 18px">
+        <input type="checkbox" name="pdpa" required>
+        <span>ข้าพเจ้ายินยอมให้บริษัทเก็บรวบรวมและใช้ข้อมูลที่ให้ไว้ เพื่อติดต่อกลับและดำเนินการแก้ไขเรื่องที่แจ้ง ตาม
+          <a href="https://precise.co.th/corporate-governance/privacy-rights/" target="_blank" rel="noopener"
+             style="color:var(--blue);text-decoration:underline">นโยบายความเป็นส่วนตัว</a></span>
+      </label>
+
+      <button class="btn btn--orange" type="submit">ส่งเรื่อง</button>
+      <p class="err" id="serr" hidden></p>
+    </form>
+  </div>
+
+  <div class="card" id="donecard" hidden>
+    <div class="done">
+      <h3>รับเรื่องเรียบร้อยแล้ว</h3>
+      <p>ผู้รับผิดชอบจะติดต่อกลับภายใน 2 วันทำการ ท่านสามารถอ้างอิงเลขที่ด้านล่างเมื่อสอบถามความคืบหน้า</p>
+      <p class="ref">เลขที่เรื่อง <span id="sref"></span></p>
+    </div>
+    <p style="color:var(--muted);font-size:.86rem;margin-top:16px">
+      <span class="ph" title="ยังไม่ได้เชื่อมกับระบบหลังบ้าน ข้อมูลที่กรอกยังไม่ถูกบันทึกที่ใด">
+      หน้าสาธิต ข้อมูลยังไม่ถูกส่งไปที่ระบบใด</span></p>
+    <p style="margin-top:18px"><a class="btn btn--line" href="precise-pcc-pem.html">กลับหน้าเว็บหลัก</a></p>
+  </div>
+</main>
+
+<script>
+// เติมเลขที่อ้างอิงอัตโนมัติ เมื่อเข้ามาจากปุ่มแจ้งปัญหาในหน้า Order Status
+const ref = new URLSearchParams(location.search).get('ref');
+if (ref) {
+  const el = document.getElementById('refInput');
+  el.value = ref;
+  el.closest('.field').querySelector('span').insertAdjacentHTML('beforeend',
+    ' <span class="badge is-ok" style="margin-left:6px">เติมจากคำสั่งซื้อให้แล้ว</span>');
+}
+
+document.getElementById('sform').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target, err = document.getElementById('serr');
+  if (!f.checkValidity()) {
+    err.textContent = 'กรุณากรอกข้อมูลที่จำเป็นให้ครบ และยินยอมให้เก็บข้อมูลก่อนส่งเรื่อง';
+    err.hidden = false;
+    const bad = f.querySelector(':invalid');
+    if (bad) { bad.focus(); bad.scrollIntoView({ block:'center' }); }
+    return;
+  }
+  err.hidden = true;
+  document.getElementById('sref').textContent = 'CS-69-' + String(Math.floor(Math.random()*9000)+1000);
+  document.getElementById('formcard').hidden = true;
+  document.getElementById('donecard').hidden = false;
+  window.scrollTo({ top:0, behavior:'smooth' });
+  console.log('support ticket', {
+    consentAt:new Date().toISOString(), consentVersion:'2569-09', source:location.href,
+    ...Object.fromEntries(new FormData(f).entries())
+  });
+});
+</script>
+</body>
+</html>

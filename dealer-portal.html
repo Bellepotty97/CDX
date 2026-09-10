@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dealer Management Platform | PEM</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dealer.css">
+<style>
+/* ---------- โครงหน้า ---------- */
+.appbar{background:var(--blue-deep);color:#fff;position:sticky;top:0;z-index:50}
+.appbar .wrap{display:flex;align-items:center;gap:14px;min-height:60px;flex-wrap:wrap;padding-block:8px}
+.appbar .brandtxt{font-weight:600;font-size:.98rem;line-height:1.25}
+.appbar .brandtxt small{display:block;font-weight:400;font-size:.76rem;color:#9dc4e2}
+.appbar .sp{margin-left:auto}
+.who{text-align:right;font-size:.82rem;color:#c7dcee;line-height:1.35}
+.who b{display:block;color:#fff;font-size:.9rem}
+.appbar .btn--line{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+.appbar .btn--line:hover{background:rgba(255,255,255,.12);color:#fff;border-color:#fff}
+.layout{display:grid;grid-template-columns:264px 1fr;gap:26px;align-items:start;padding-block:26px 60px}
+.side{position:sticky;top:76px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px}
+.side h4{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:12px 14px 6px}
+.navbtn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border:0;border-radius:var(--r);
+  background:none;font-family:inherit;font-size:.9rem;color:var(--ink);cursor:pointer;text-align:left;line-height:1.35}
+.navbtn:hover{background:var(--tint);color:var(--blue)}
+.navbtn[aria-current=page]{background:var(--blue);color:#fff;font-weight:600}
+.navbtn .n{flex:none;width:22px;height:22px;border-radius:5px;display:grid;place-items:center;
+  background:var(--tint);color:var(--blue-dark);font-size:.74rem;font-weight:700}
+.navbtn[aria-current=page] .n{background:rgba(255,255,255,.22);color:#fff}
+.navbtn .tag{margin-left:auto;font-size:.7rem;background:var(--orange);color:#fff;border-radius:999px;padding:1px 7px;font-weight:700}
+.view[hidden]{display:none}
+.viewhead{margin-bottom:20px}
+.viewhead h1{font-size:1.42rem;color:var(--blue-dark)}
+.viewhead p{color:var(--muted);font-size:.92rem;margin-top:6px;max-width:78ch}
+
+/* ---------- KPI ---------- */
+.kpirow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.kpi .lab{font-size:.82rem;color:var(--muted)}
+.kpi .val{font-size:1.72rem;font-weight:700;line-height:1.2;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .sub{font-size:.8rem;color:var(--muted);margin-top:4px}
+.kpi .delta{font-size:.82rem;font-weight:600;margin-top:4px}
+.kpi .delta.up{color:var(--ok)} .kpi .delta.down{color:var(--bad)}
+.meter{height:7px;border-radius:99px;background:var(--tint);margin-top:10px;overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px;background:var(--blue)}
+.meter i.over{background:var(--ok)}
+.meter i.under{background:var(--orange)}
+
+/* ---------- กราฟ ---------- */
+.chartcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.84rem;color:var(--muted);margin:2px 0 14px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.swatch{width:14px;height:10px;border-radius:2px;background:var(--blue);flex:none}
+.swatch.tick{width:16px;height:0;border-top:2px dashed var(--orange);border-radius:0}
+.chartbox{position:relative;overflow-x:auto}
+.chartbox svg{display:block;min-width:560px}
+.gridline{stroke:var(--line);stroke-width:1}
+.axistext{fill:var(--muted);font-size:11px;font-family:inherit}
+.barmark{fill:var(--blue);transition:fill .12s}
+.barmark.hit:hover,.barmark.is-on{fill:#0c5b96}
+.tickmark{stroke:var(--orange);stroke-width:2;stroke-dasharray:5 4}
+.vallabel{fill:var(--blue-dark);font-size:11px;font-weight:700;font-family:inherit;text-anchor:middle}
+.tip{position:absolute;pointer-events:none;background:var(--blue-deep);color:#fff;border-radius:var(--r);
+  padding:9px 12px;font-size:.8rem;line-height:1.5;white-space:nowrap;opacity:0;transition:opacity .12s;z-index:5;
+  box-shadow:0 8px 20px rgba(6,42,75,.28)}
+.tip.on{opacity:1}
+.tip b{color:#8ec5ee;font-weight:600}
+
+/* ---------- แถบเครื่องมือ ---------- */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.toolbar input[type=search],.toolbar select{width:auto;min-width:180px;flex:1 1 200px}
+.toolbar .sp{margin-left:auto}
+.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-family:inherit;
+  font-size:.84rem;cursor:pointer;color:var(--ink);white-space:nowrap}
+.pill:hover{border-color:var(--blue);color:var(--blue)}
+.pill.is-on{background:var(--blue);border-color:var(--blue);color:#fff}
+.pill b{color:var(--muted);margin-left:4px;font-weight:600}
+.pill.is-on b{color:#cfe6f8}
+
+/* ---------- รายการสินค้า ---------- */
+.prod{display:grid;grid-template-columns:1fr auto;gap:12px 18px;align-items:center;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.prod+.prod{margin-top:10px}
+.prod h3{font-size:.95rem}
+.prod .meta{font-size:.78rem;color:var(--muted);margin-top:2px}
+.prod .lt{font-size:.78rem;margin-top:4px}
+.prod .right{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.prod .base{font-size:.78rem;color:var(--muted);text-decoration:line-through}
+.prod .net{font-size:1.06rem;font-weight:700;color:var(--blue-dark);font-variant-numeric:tabular-nums}
+.prod .save{font-size:.76rem;color:var(--ok);font-weight:600}
+.qty{display:inline-flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.qty button{border:0;background:var(--tint);width:30px;font-size:1rem;cursor:pointer;font-family:inherit;color:var(--blue-dark)}
+.qty button:hover{background:var(--blue);color:#fff}
+.qty input{width:52px;border:0;text-align:center;padding:7px 2px;font-family:inherit;font-size:.88rem}
+
+/* ---------- ตะกร้า ---------- */
+.cartbar{position:sticky;bottom:0;background:var(--blue-deep);color:#fff;border-radius:var(--r);
+  padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:18px;
+  box-shadow:0 -6px 22px rgba(6,42,75,.18)}
+.cartbar .sp{margin-left:auto}
+.cartbar b{font-size:1.12rem;font-variant-numeric:tabular-nums}
+
+/* ---------- ไทม์ไลน์สถานะ ---------- */
+.pipe{display:flex;gap:0;flex-wrap:wrap;margin:14px 0 4px}
+.pipe .st{flex:1 1 0;min-width:92px;text-align:center;font-size:.74rem;color:var(--muted);position:relative;padding-top:22px}
+.pipe .st::before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:12px;height:12px;
+  border-radius:50%;background:var(--line);z-index:2}
+.pipe .st::after{content:"";position:absolute;top:10px;left:0;right:0;height:2px;background:var(--line);z-index:1}
+.pipe .st:first-child::after{left:50%}
+.pipe .st:last-child::after{right:50%}
+.pipe .st.done{color:var(--blue-dark);font-weight:600}
+.pipe .st.done::before{background:var(--blue)}
+.pipe .st.done::after{background:var(--blue)}
+.pipe .st.now::before{background:var(--orange);box-shadow:0 0 0 4px rgba(245,130,32,.22)}
+.pipe .st.now{color:#a4560c;font-weight:700}
+
+/* ---------- ดาว ---------- */
+.stars{display:inline-flex;gap:3px}
+.star{background:none;border:0;padding:0;cursor:pointer;font-size:1.2rem;line-height:1;color:#d6dee6;font-family:inherit}
+.star.on{color:#f5a623}
+.star:disabled{cursor:default}
+.rateline{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:7px 0}
+.rateline+.rateline{border-top:1px solid var(--line)}
+.rateline span{font-size:.88rem}
+
+/* ---------- อื่น ๆ ---------- */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;
+  display:flex;flex-direction:column;gap:7px}
+.tile h3{font-size:.98rem;color:var(--blue-dark)}
+.tile p{font-size:.86rem;color:var(--muted)}
+.tile .go{margin-top:auto;padding-top:10px;color:var(--blue);font-weight:600;font-size:.86rem}
+.vid{aspect-ratio:16/9;background:var(--blue-dark);border-radius:var(--r);display:grid;place-items:center;color:#fff;
+  position:relative;overflow:hidden}
+.vid::after{content:"";width:0;height:0;border-left:22px solid #fff;border-top:14px solid transparent;
+  border-bottom:14px solid transparent;margin-left:6px;opacity:.92}
+.note{background:var(--tint);border-left:3px solid var(--blue);border-radius:0 var(--r) var(--r) 0;
+  padding:14px 18px;font-size:.88rem;color:var(--blue-dark)}
+.note.warn{background:#fdf3e0;border-left-color:var(--orange);color:#7a4d06}
+.modal{position:fixed;inset:0;background:rgba(6,42,75,.55);display:grid;place-items:center;padding:20px;z-index:90}
+.modal[hidden]{display:none}
+.modal>div{background:var(--surface);border-radius:var(--r);padding:26px 28px;max-width:600px;width:100%;
+  max-height:88vh;overflow:auto}
+.doc{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:40px 44px;font-size:.9rem;line-height:2}
+.doc .hd{display:flex;justify-content:space-between;gap:20px;font-size:.76rem;color:var(--muted);
+  border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:24px}
+.doc h3{text-align:center;font-size:1.05rem;margin:18px 0 22px;text-decoration:underline}
+.doc .fill{display:inline-block;min-width:150px;border-bottom:1px dotted var(--muted);color:var(--blue-dark)}
+.doc .sign{text-align:center;margin-top:44px}
+
+@media (max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static;display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
+  .side h4{grid-column:1/-1}
+  .kpirow{grid-template-columns:1fr 1fr}
+  .tiles{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .side{grid-template-columns:1fr}
+  .kpirow,.tiles{grid-template-columns:1fr}
+  .prod{grid-template-columns:1fr}
+  .prod .right{align-items:flex-start;text-align:left}
+  .doc{padding:24px 20px}
+}
+@media print{
+  .appbar,.side,.toolbar,.noprint{display:none!important}
+  .layout{grid-template-columns:1fr;padding:0}
+  body{background:#fff}
+  .doc{border:0;padding:0}
+}
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <div class="wrap">
+    <div class="brandtxt">Dealer Management Platform<small>บริษัท พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง จำกัด (PEM)</small></div>
+    <span class="sp"></span>
+    <div class="who"><b id="whoCompany"></b><span id="whoMeta"></span></div>
+    <button class="btn btn--line btn--sm" id="logout" type="button">ออกจากระบบ</button>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="side" id="side" aria-label="เมนูหลัก">
+    <h4>เมนู</h4>
+  </nav>
+
+  <main id="main"></main>
+</div>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true"><div id="modalBody"></div></div>
+
+<script src="data/dealer-config.js"></script>
+<script src="data/catalog.js"></script>
+<script src="assets/dealer-portal.js"></script>
+</body>
+</html>

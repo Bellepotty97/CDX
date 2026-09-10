@@ -1,0 +1,83 @@
+/* สไตล์กลางของ Dealer Management Platform
+   ใช้โทเคนสีชุดเดียวกับหน้าเว็บสาธารณะ เพื่อให้ต่อเนื่องเป็นระบบเดียวกัน */
+:root{
+  --blue:#0f6db4; --blue-dark:#0a3d6b; --blue-deep:#062a4b; --tint:#eef5fb;
+  --orange:#f58220; --ink:#16283c; --muted:#5d6e80; --line:#dde6ed;
+  --ok:#1a7f52; --warn:#b26a00; --bad:#b3261e; --wrap:1240px; --r:6px;
+  --surface:#fff; --page:#f4f7fa;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;color:var(--ink);background:var(--page);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  font-family:'IBM Plex Sans Thai','Noto Sans Thai','Sarabun','Leelawadee UI',system-ui,sans-serif}
+h1,h2,h3,h4{margin:0;line-height:1.3;font-weight:600;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:20px}
+.ph{border-bottom:1px dashed rgba(245,130,32,.8);cursor:help}
+.sr{position:absolute;left:-9999px}
+
+/* ---------- ปุ่ม ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--r);
+  font-weight:600;font-size:.94rem;border:1px solid transparent;cursor:pointer;font-family:inherit;
+  transition:background .15s,color .15s,border-color .15s}
+.btn--solid{background:var(--blue);color:#fff}.btn--solid:hover{background:#0c5b96}
+.btn--orange{background:var(--orange);color:#fff}.btn--orange:hover{background:#dd7014}
+.btn--line{border-color:var(--line);background:var(--surface);color:var(--ink)}
+.btn--line:hover{border-color:var(--blue);color:var(--blue)}
+.btn--sm{padding:7px 14px;font-size:.84rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ---------- ฟอร์ม ---------- */
+.field{display:block;margin-bottom:16px}
+.field>span{display:block;font-size:.86rem;font-weight:600;margin-bottom:6px}
+.field .hint{font-weight:400;color:var(--muted);font-size:.82rem}
+.req::after{content:" *";color:var(--bad)}
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=password],input[type=date],select,textarea{
+  width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--r);
+  font-family:inherit;font-size:.94rem;background:var(--surface);color:var(--ink)}
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(15,109,180,.15)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:0 18px}
+.checkrow{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--muted)}
+.checkrow input{margin-top:5px;flex:none;width:16px;height:16px;accent-color:var(--blue)}
+
+/* ---------- การ์ด ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 26px}
+.card+.card{margin-top:18px}
+.card>h2{font-size:1.15rem;color:var(--blue-dark)}
+.card>h2+p{color:var(--muted);font-size:.9rem;margin-top:6px}
+.cardhead{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.cardhead .sp{margin-left:auto}
+
+/* ---------- ป้ายสถานะ ---------- */
+.badge{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;border-radius:999px;
+  font-size:.78rem;font-weight:600;background:var(--tint);color:var(--blue-dark);white-space:nowrap}
+.badge.is-tier{background:#fff4e8;color:#a4560c}
+.badge.is-ok{background:#e6f4ed;color:var(--ok)}
+.badge.is-warn{background:#fdf3e0;color:var(--warn)}
+.badge.is-bad{background:#fbeae9;color:var(--bad)}
+.badge.is-mute{background:#eef1f4;color:var(--muted)}
+
+/* ---------- ตาราง ---------- */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:640px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);color:var(--blue-dark);font-weight:600;white-space:nowrap;font-size:.82rem}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#fafcfe}
+td.num,th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ---------- แถบหัวเรื่อง ---------- */
+.pagehead{background:linear-gradient(115deg,var(--blue-deep),var(--blue-dark) 60%,#0d5a97);color:#fff;padding-block:34px}
+.pagehead h1{font-size:clamp(1.5rem,3vw,2.1rem)}
+.pagehead p{color:#c7dcee;margin-top:10px;max-width:62ch}
+.pagehead a{color:#8ec5ee}
+
+@media (max-width:760px){
+  .grid2,.grid3{grid-template-columns:1fr}
+}
