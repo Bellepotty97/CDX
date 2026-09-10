@@ -33,31 +33,37 @@ window.PEM_DEALER = (function () {
   ];
 
   // ---------- เกณฑ์ที่ฝ่ายขายใช้ประเมิน tier ครั้งแรก ----------
+  // ให้คะแนนแต่ละหัวข้อ 1-4 ถ่วงน้ำหนักแล้วได้คะแนนรวม 0-100
   const firstTierCriteria = [
-    { label:'ทุนจดทะเบียน',              w:20, detail:'ต่ำกว่า 1 ลบ. / 1-5 ลบ. / 5-20 ลบ. / มากกว่า 20 ลบ.' },
-    { label:'ประสบการณ์ในธุรกิจไฟฟ้า',   w:20, detail:'น้อยกว่า 2 ปี / 2-5 ปี / 5-10 ปี / มากกว่า 10 ปี' },
-    { label:'ยอดซื้อคาดการณ์ปีแรก',      w:30, detail:'ตัวเลขที่ผู้สมัครแจ้ง ประกอบกับงานในมือที่ตรวจสอบได้' },
-    { label:'พื้นที่และช่องทางจำหน่าย',  w:15, detail:'จำนวนจังหวัดที่ครอบคลุม หน้าร้าน คลังสินค้า' },
-    { label:'ผลงานอ้างอิง',              w:15, detail:'โครงการที่เคยส่งมอบ ลูกค้าอ้างอิง' },
+    { key:'capital', label:'ทุนจดทะเบียนหรือเงินทุนหมุนเวียน', w:20,
+      levels:['ต่ำกว่า 1 ล้านบาท','1–5 ล้านบาท','5–20 ล้านบาท','มากกว่า 20 ล้านบาท'] },
+    { key:'exp', label:'ประสบการณ์ในธุรกิจไฟฟ้า', w:20,
+      levels:['น้อยกว่า 2 ปี','2–5 ปี','5–10 ปี','มากกว่า 10 ปี'] },
+    { key:'forecast', label:'ยอดซื้อคาดการณ์ปีแรก', w:30,
+      levels:['ต่ำกว่า 2 ล้านบาท','2–10 ล้านบาท','10–30 ล้านบาท','มากกว่า 30 ล้านบาท'] },
+    { key:'area', label:'พื้นที่และช่องทางจำหน่าย', w:15,
+      levels:['1 จังหวัด ไม่มีหน้าร้าน','2–3 จังหวัด มีหน้าร้าน','4–6 จังหวัด','มากกว่า 6 จังหวัด หรือมีคลังสินค้าเอง'] },
+    { key:'ref', label:'ผลงานอ้างอิง', w:15,
+      levels:['ยังไม่มีผลงานอ้างอิง','1–2 โครงการ','3–5 โครงการ','มากกว่า 5 โครงการ หรือเคยเข้างานราชการ'] },
   ];
 
-  // ---------- ระยะเวลาส่งมอบตามกลุ่มสินค้า ----------
-  const leadTime = {
-    'Distribution Transformer':            { min:45, max:60,  stock:false },
-    'Instrument Transformer (Oil Type)':   { min:30, max:45,  stock:false },
-    'Instrument Transformer (Dry Type)':   { min:30, max:45,  stock:false },
-    'Load Break Switch':                   { min:60, max:90,  stock:false },
-    'Recloser':                            { min:90, max:120, stock:false },
-    'Protection Relay':                    { min:40, max:55,  stock:false },
-    'Power Capacitor':                     { min:21, max:30,  stock:false },
-    'Fuse':                                { min:7,  max:14,  stock:true  },
-    'Surge Arrester':                      { min:7,  max:14,  stock:true  },
-    'Suspension Insulator':                { min:7,  max:10,  stock:true  },
-    'LED':                                 { min:10, max:21,  stock:true  },
-    'FRTU':                                { min:30, max:45,  stock:false },
-    'Cellular Router':                     { min:21, max:30,  stock:true  },
-  };
-  const leadTimeDefault = { min:30, max:45, stock:false };
+  // คะแนนรวม -> ระดับที่ระบบแนะนำ ฝ่ายขายปรับขึ้นลงเองได้
+  const tierFromScore = sc => sc >= 80 ? 'T4' : sc >= 60 ? 'T3' : sc >= 40 ? 'T2' : 'T1';
+
+  // รายการที่ฝ่ายขายต้องตรวจก่อนอนุมัติ
+  const verifySteps = [
+    'โทรยืนยันตัวตนกับผู้ติดต่อที่ลงทะเบียน',
+    'ตรวจหนังสือรับรองหรือทะเบียนพาณิชย์ว่ายังไม่หมดอายุ',
+    'ตรวจ ภ.พ.20 และเลขประจำตัวผู้เสียภาษี',
+    'ตรวจประวัติเครดิตและยอดค้างชำระเดิม (ถ้าเคยซื้อ)',
+    'ตรวจว่าไม่ทับซ้อนกับตัวแทนรายเดิมในพื้นที่เดียวกัน',
+    'สำหรับกลุ่ม PEA Regional ตรวจเขตการไฟฟ้าที่ขอเข้างาน',
+  ];
+
+  // ---------- ระยะเวลาส่งมอบ ----------
+  // ฝ่ายขายยืนยันให้ใช้ 3-5 วันทำการเท่ากันทุกกลุ่มสินค้า
+  const leadTimeDefault = { min:3, max:5 };
+  const leadTime = {};
 
   // ---------- ช่วงราคาตั้งต้นต่อกลุ่มสินค้า (บาท) : ประมาณการเพื่อสาธิตเท่านั้น ----------
   const priceBand = {
@@ -116,7 +122,7 @@ window.PEM_DEALER = (function () {
     creditLimit: 5000000,
   };
 
-  return { groups, tiers, firstTierCriteria, leadTime, leadTimeDefault,
+  return { groups, tiers, firstTierCriteria, tierFromScore, verifySteps, leadTime, leadTimeDefault,
            basePrice, netPrice, demoAccount,
            groupById: id => groups.find(g => g.id === id),
            tierById:  id => tiers.find(t => t.id === id),

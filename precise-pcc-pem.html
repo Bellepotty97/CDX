@@ -73,6 +73,26 @@ img{max-width:100%;display:block}
   width:44px;height:40px;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
 .burger span{width:20px;height:2px;background:var(--ink)}
 
+/* ---------- ไอคอน ---------- */
+.ico{display:inline-grid;place-items:center;flex:none;color:var(--blue)}
+.ico svg{display:block}
+.mega h4{display:flex;align-items:center;gap:8px}
+.mega h4 .ico{width:22px;height:22px;border-radius:5px;background:var(--tint)}
+.mega ul a{display:flex;align-items:center;gap:9px}
+.mega ul a .ico{width:24px;height:24px;border-radius:6px;background:var(--tint);transition:background .15s,color .15s}
+.mega ul a:hover .ico{background:var(--blue);color:#fff}
+.mega ul a b{margin-left:auto}
+.svc h3{display:flex;align-items:center;gap:10px}
+.svc h3 .ico{width:34px;height:34px;border-radius:8px;background:#fff4e8;color:var(--orange)}
+.prow .ico{width:38px;height:38px;border-radius:8px;background:var(--tint)}
+.prow .pmain{display:flex;align-items:flex-start;gap:13px;min-width:0}
+.sec-title h2 .ico{width:34px;height:34px;border-radius:8px;background:var(--tint);vertical-align:-8px;margin-right:8px}
+.ctcard h3{display:flex;align-items:flex-start;gap:10px}
+.ctcard h3 .ico{width:34px;height:34px;border-radius:8px;background:var(--tint);margin-top:-3px}
+.ctcard.is-dealer h3 .ico{background:#fff4e8;color:var(--orange)}
+.ctcard.is-care h3 .ico{background:#eef1f4;color:var(--muted)}
+.chbtn svg,.chgrid .ico{flex:none}
+
 /* ---------- products (PEM) ---------- */
 .prodsec{background:var(--tint);border-bottom:1px solid var(--line)}
 .owner{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
@@ -256,7 +276,7 @@ img{max-width:100%;display:block}
         <button class="top hot" aria-expanded="false">สินค้าและบริการ <i class="caret"></i></button>
         <div class="mega">
           <div>
-            <h4>หม้อแปลงไฟฟ้าและหม้อแปลงเครื่องวัด</h4>
+            <h4><span class="ico" data-icon="transformer" data-icon-size="15"></span>หม้อแปลงไฟฟ้าและหม้อแปลงเครื่องวัด</h4>
             <ul>
             <li><a href="#products" data-core="Distribution Transformer">Distribution Transformer <b>87</b></a></li>
             <li><a href="#products" data-core="Instrument Transformer (Oil Type)">Instrument Transformer (Oil Type) <b>70</b></a></li>
@@ -264,7 +284,7 @@ img{max-width:100%;display:block}
             </ul>
           </div>
           <div>
-            <h4>อุปกรณ์ป้องกันและตัดตอน</h4>
+            <h4><span class="ico" data-icon="shield" data-icon-size="15"></span>อุปกรณ์ป้องกันและตัดตอน</h4>
             <ul>
             <li><a href="#products" data-core="Fuse">Fuse <b>68</b></a></li>
             <li><a href="#products" data-core="Surge Arrester">Surge Arrester <b>60</b></a></li>
@@ -274,7 +294,7 @@ img{max-width:100%;display:block}
             </ul>
           </div>
           <div>
-            <h4>สวิตช์แรงสูงและอุปกรณ์อื่น</h4>
+            <h4><span class="ico" data-icon="switchgear" data-icon-size="15"></span>สวิตช์แรงสูงและอุปกรณ์อื่น</h4>
             <ul>
             <li><a href="#products" data-core="1-Pole Disconnecting Switch (Vertical Break)">1-Pole Disconnecting Switch (Vertical Break) <b>8</b></a></li>
             <li><a href="#products" data-core="3-Pole Disconnecting Switch (Double-side Break)">3-Pole Disconnecting Switch (Double-side Break) <b>4</b></a></li>
@@ -288,7 +308,7 @@ img{max-width:100%;display:block}
             </ul>
           </div>
           <div class="panel">
-            <h4>บริการและโซลูชัน</h4>
+            <h4><span class="ico" data-icon="install" data-icon-size="15"></span>บริการและโซลูชัน</h4>
             <ul>
               <li><a href="#services">EMS</a></li>
               <li><a href="#services">ติดตั้ง</a></li>
@@ -340,7 +360,7 @@ img{max-width:100%;display:block}
   <div class="wrap">
     <div class="sec-title">
       <span class="owner">ผลิตและจำหน่ายโดย <b>บริษัท พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง จำกัด (PEM)</b></span>
-      <h2>สินค้าและบริการ</h2>
+      <h2><span class="ico" data-icon="box" data-icon-size="20"></span>สินค้าและบริการ</h2>
       <p>สินค้า 446 รายการ ใน 17 กลุ่มหลัก (อ้างอิง Price List ประกาศใช้ 1 มิถุนายน 2569) และงานบริการที่ประเมินราคารายโครงการ</p>
     </div>
 
@@ -359,32 +379,32 @@ img{max-width:100%;display:block}
 
     <div class="svcwrap" id="services">
       <div class="sec-title" style="margin-bottom:24px">
-        <h2 style="font-size:1.5rem">งานบริการและโซลูชัน</h2>
+        <h2 style="font-size:1.5rem"><span class="ico" data-icon="install" data-icon-size="19"></span>งานบริการและโซลูชัน</h2>
         <p>ไม่มีราคากลาง ขอบเขตงานและราคาประเมินเป็นรายโครงการ</p>
       </div>
       <div class="svcgrid">
       <article class="svc">
-        <h3>EMS</h3>
+        <h3><span class="ico" data-icon="energy" data-icon-size="19"></span>EMS</h3>
         <p class="ph" title="รอคำอธิบายจริงจากฝ่ายขาย">ระบบบริหารจัดการพลังงาน</p>
         <a class="pask" href="#contact">ขอใบเสนอราคา</a>
       </article>
       <article class="svc">
-        <h3>ติดตั้ง</h3>
+        <h3><span class="ico" data-icon="install" data-icon-size="19"></span>ติดตั้ง</h3>
         <p class="ph" title="รอคำอธิบายจริงจากฝ่ายขาย">งานติดตั้งและทดสอบหน้างาน</p>
         <a class="pask" href="#contact">ขอใบเสนอราคา</a>
       </article>
       <article class="svc">
-        <h3>บำรุงรักษา</h3>
+        <h3><span class="ico" data-icon="maintain" data-icon-size="19"></span>บำรุงรักษา</h3>
         <p class="ph" title="รอคำอธิบายจริงจากฝ่ายขาย">ตรวจสภาพและบำรุงรักษาตามรอบ</p>
         <a class="pask" href="#contact">ขอใบเสนอราคา</a>
       </article>
       <article class="svc">
-        <h3>Solution Factory 4.0</h3>
+        <h3><span class="ico" data-icon="factory" data-icon-size="19"></span>Solution Factory 4.0</h3>
         <p class="ph" title="รอคำอธิบายจริงจากฝ่ายขาย">โซลูชันปรับปรุงโรงงานสู่ระบบอัตโนมัติ</p>
         <a class="pask" href="#contact">ขอใบเสนอราคา</a>
       </article>
       <article class="svc">
-        <h3>MES</h3>
+        <h3><span class="ico" data-icon="chartbar" data-icon-size="19"></span>MES</h3>
         <p class="ph" title="รอคำอธิบายจริงจากฝ่ายขาย">ระบบบริหารจัดการการผลิต</p>
         <a class="pask" href="#contact">ขอใบเสนอราคา</a>
       </article>
@@ -481,23 +501,23 @@ img{max-width:100%;display:block}
 <section class="sec" id="contact" style="background:var(--tint)">
   <div class="wrap">
     <div class="sec-title">
-      <h2>ติดต่อเรา</h2>
+      <h2><span class="ico" data-icon="phone" data-icon-size="20"></span>ติดต่อเรา</h2>
       <p>เลือกเรื่องที่ต้องการติดต่อ ทีมงานจะติดต่อกลับโดยเร็วที่สุด</p>
     </div>
 
     <div class="ctgrid">
       <a class="ctcard" href="#" title="รอเชื่อมไปยังฟอร์มขอใบเสนอราคา">
-        <h3>สอบถามสินค้าและบริการ ขอราคา และกำหนดส่งมอบ</h3>
+        <h3><span class="ico" data-icon="quote" data-icon-size="19"></span>สอบถามสินค้าและบริการ ขอราคา และกำหนดส่งมอบ</h3>
         <p>สำหรับลูกค้า ผู้รับเหมา และหน่วยงานที่ต้องการใบเสนอราคา</p>
         <span class="ctgo ph">เริ่มต้น</span>
       </a>
       <a class="ctcard is-dealer" href="dealer.html">
-        <h3>สนใจเป็น Dealer ของเรา</h3>
+        <h3><span class="ico" data-icon="handshake" data-icon-size="19"></span>สนใจเป็น Dealer ของเรา</h3>
         <p>สมัครเป็นตัวแทนจำหน่ายสินค้า PEM และสอบถามเงื่อนไขการเป็นคู่ค้า</p>
         <span class="ctgo">สมัคร</span>
       </a>
       <a class="ctcard is-care" href="support.html">
-        <h3>แจ้งปัญหา ข้อร้องเรียน ข้อเสนอแนะ</h3>
+        <h3><span class="ico" data-icon="support" data-icon-size="19"></span>แจ้งปัญหา ข้อร้องเรียน ข้อเสนอแนะ</h3>
         <p>แจ้งเรื่องหลังการขาย งานบริการ หรือข้อเสนอแนะเพื่อการปรับปรุง</p>
         <span class="ctgo">แจ้งเรื่อง</span>
       </a>
@@ -574,6 +594,7 @@ img{max-width:100%;display:block}
   </div>
 </footer>
 
+<script src="assets/icons.js"></script>
 <script src="data/catalog.js"></script>
 <script>
 // เมนูมือถือ
@@ -630,9 +651,12 @@ function render(){
     : 'ไม่พบสินค้าที่ตรงกับคำค้น ลองพิมพ์คำอื่น หรือติดต่อฝ่ายขายโดยตรง';
   listEl.innerHTML = matches.slice(0, shown).map(it => `
     <article class="prow">
-      <div>
-        <h3>${it[2]}</h3>
-        <span class="pmeta">${CAT.core[it[0]]} · ${CAT.type[it[1]]}</span>
+      <div class="pmain">
+        <span class="ico">${PEM_ICON.svg(PEM_ICON.byCore(CAT.core[it[0]]), 20)}</span>
+        <div>
+          <h3>${it[2]}</h3>
+          <span class="pmeta">${CAT.core[it[0]]} · ${CAT.type[it[1]]}</span>
+        </div>
       </div>
       <span class="pcode">${it[3]}</span>
       <a class="pask" href="#contact">ขอราคา</a>
@@ -661,6 +685,12 @@ document.addEventListener('click', e => {
 moreBtn.addEventListener('click', () => { shown += PAGE; render(); });
 q.addEventListener('input', apply);
 document.getElementById('clearBtn').addEventListener('click', () => { q.value = ''; apply(); q.focus(); });
+
+// เติมไอคอนให้รายการสินค้าใน mega menu และ footer ตามกลุ่มสินค้า
+document.querySelectorAll('.mega ul a[data-core]').forEach(a => {
+  a.insertAdjacentHTML('afterbegin',
+    `<span class="ico">${PEM_ICON.svg(PEM_ICON.byCore(a.dataset.core), 15)}</span>`);
+});
 
 buildChips();
 apply();

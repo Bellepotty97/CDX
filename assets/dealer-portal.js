@@ -88,20 +88,20 @@ const cartTotal = () => Object.entries(CART).reduce((s, [i, q]) => s + ROWS[i].n
 
 /* ---------------- เมนู ---------------- */
 const MENUS = [
-  { id:'perf',     n:1, name:'Target & Performance' },
-  { id:'shop',     n:2, name:'สั่งซื้อสินค้า' },
-  { id:'price',    n:3, name:'Check Pricelist' },
-  { id:'orders',   n:4, name:'Order Status' },
-  { id:'leads',    n:5, name:'แจ้งงาน / ส่งต่อโอกาสขาย' },
-  { id:'training', n:6, name:'Training' },
-  { id:'appoint',  n:7, name:'หนังสือแต่งตั้ง', peaOnly:true },
-  { id:'reward',   n:8, name:'Rewards' },
+  { id:'perf',     n:1, ic:'target',      name:'Target & Performance' },
+  { id:'shop',     n:2, ic:'cart',        name:'สั่งซื้อสินค้า' },
+  { id:'price',    n:3, ic:'tag',         name:'Check Pricelist' },
+  { id:'orders',   n:4, ic:'truck',       name:'Order Status' },
+  { id:'leads',    n:5, ic:'briefcase',   name:'แจ้งงาน / ส่งต่อโอกาสขาย' },
+  { id:'training', n:6, ic:'training',    name:'Training' },
+  { id:'appoint',  n:7, ic:'certificate', name:'หนังสือแต่งตั้ง', peaOnly:true },
+  { id:'reward',   n:8, ic:'gift',        name:'Rewards' },
 ].filter(m => !m.peaOnly || isPEA);
 
 function drawNav() {
   $('#side').innerHTML = '<h4>เมนู</h4>' + MENUS.map(m => `
     <button class="navbtn" data-view="${m.id}" type="button">
-      <span class="n">${m.n}</span><span>${esc(m.name)}</span>
+      <span class="ic">${PEM_ICON.svg(m.ic, 19)}</span><span>${esc(m.name)}</span>
       ${m.id === 'shop' && cartCount() ? `<span class="tag">${cartCount()}</span>` : ''}
     </button>`).join('');
   $('#side').querySelectorAll('.navbtn').forEach(b =>
@@ -136,7 +136,7 @@ function viewPerf() {
 
   return `
   <div class="viewhead">
-    <h1>Target &amp; Performance</h1>
+    <h1><span class="h1ic">${PEM_ICON.svg('target', 26)}</span>Target &amp; Performance</h1>
     <p>เป้าหมายและผลงานของ ${esc(ME.company)} ปี 2569 เป้าหมายกำหนดตามกลุ่ม
        <b>${esc(GROUP.name)}</b> และระดับ <b>${esc(TIER.id)} ${esc(TIER.name)}</b>
        ทบทวนระดับทุกไตรมาสจากยอดซื้อที่ชำระแล้วย้อนหลัง 12 เดือน</p>
@@ -287,7 +287,7 @@ let shopCore = null, shopTerm = '', shopShown = 30;
 function viewShop() {
   return `
   <div class="viewhead">
-    <h1>สั่งซื้อสินค้า</h1>
+    <h1><span class="h1ic">${PEM_ICON.svg('cart', 26)}</span>สั่งซื้อสินค้า</h1>
     <p>รายการสินค้าชุดเดียวกับหน้าเว็บสาธารณะ แต่แสดงราคาของท่านตามกลุ่ม <b>${esc(GROUP.name)}</b>
        (ส่วนลด ${(GROUP.disc*100).toFixed(0)}%) และระดับ <b>${esc(TIER.id)} ${esc(TIER.name)}</b>
        (ส่วนลดเพิ่ม ${(TIER.disc*100).toFixed(0)}%) พร้อมระยะเวลาส่งมอบโดยประมาณ</p>
@@ -332,12 +332,13 @@ function drawShop() {
   $('#shopList').innerHTML = m.slice(0, shopShown).map(r => {
     const q = CART[r.i] || 0;
     return `<article class="prod">
-      <div>
+      <div class="prodmain">
+        <span class="prodic">${PEM_ICON.svg(PEM_ICON.byCore(r.core), 22)}</span>
+        <div>
         <h3>${esc(r.name)}</h3>
         <div class="meta">${esc(r.core)} · ${esc(r.type)} · รหัส ${esc(r.code)}</div>
-        <div class="lt">${r.lt.stock
-          ? `<span class="badge is-ok">มีสต๊อก ส่งได้ใน ${r.lt.min}–${r.lt.max} วัน</span>`
-          : `<span class="badge is-warn">ผลิตตามคำสั่งซื้อ ${r.lt.min}–${r.lt.max} วัน</span>`}</div>
+        <div class="lt"><span class="badge is-ok">${PEM_ICON.svg('truck', 14)} ส่งมอบภายใน ${r.lt.min}–${r.lt.max} วันทำการ</span></div>
+        </div>
       </div>
       <div class="right">
         <span class="base">${baht(r.base)}</span>
@@ -407,7 +408,7 @@ let priceCore = null;
 function viewPrice() {
   return `
   <div class="viewhead">
-    <h1>Check Pricelist</h1>
+    <h1><span class="h1ic">${PEM_ICON.svg('tag', 26)}</span>Check Pricelist</h1>
     <p>ราคาสินค้าทั้งหมด ${D.baht(ROWS.length)} รายการ ตามกลุ่มและระดับของท่าน
        สั่งพิมพ์หรือบันทึกเป็น PDF ได้จากปุ่มด้านขวา</p>
   </div>
@@ -472,7 +473,7 @@ function download(name, content, type) {
 function viewOrders() {
   return `
   <div class="viewhead">
-    <h1>Order Status</h1>
+    <h1><span class="h1ic">${PEM_ICON.svg('truck', 26)}</span>Order Status</h1>
     <p>ติดตามคำสั่งซื้อตั้งแต่ร่างในตะกร้าจนถึงชำระเงินและให้คะแนน
        เมื่อชำระเงินแล้วจะเปิดให้ให้คะแนนคำสั่งซื้อ และแจ้งปัญหาได้จากช่องทางเดียวกับหน้าเว็บ</p>
   </div>
@@ -565,7 +566,7 @@ function viewLeads() {
   const pipeline = LEADS.filter(l => l.step < 3).reduce((s, l) => s + l.value, 0);
   return `
   <div class="viewhead">
-    <h1>แจ้งงาน / ส่งต่อโอกาสขาย</h1>
+    <h1><span class="h1ic">${PEM_ICON.svg('briefcase', 26)}</span>แจ้งงาน / ส่งต่อโอกาสขาย</h1>
     <p>พบงานที่เข้ากับสินค้าหรือบริการของพรีไซซ แต่เกินขอบเขตที่ท่านรับเองได้ ส่งเรื่องเข้ามาให้ทีมงานเข้าไปเสนอราคา
        ถ้าปิดงานได้ ท่านจะได้รับค่าตอบแทนตามสัดส่วนที่ตกลงไว้</p>
   </div>
@@ -670,7 +671,7 @@ function viewTraining() {
     <span class="go ph" title="รอไฟล์จริงจากฝ่ายขายและฝ่ายเทคนิค">${go}</span></article>`;
   return `
   <div class="viewhead">
-    <h1>Training</h1>
+    <h1><span class="h1ic">${PEM_ICON.svg('training', 26)}</span>Training</h1>
     <p>สื่อการเรียนรู้เรื่องสินค้าและบริการ พร้อมคู่มือการใช้งานระบบ Dealer Management Platform</p>
   </div>
   <div class="note warn" style="margin-bottom:20px">
@@ -709,7 +710,7 @@ let APPOINTS = [
 function viewAppoint() {
   return `
   <div class="viewhead">
-    <h1>หนังสือแต่งตั้งเข้างานการไฟฟ้า</h1>
+    <h1><span class="h1ic">${PEM_ICON.svg('certificate', 26)}</span>หนังสือแต่งตั้งเข้างานการไฟฟ้า</h1>
     <p>สำหรับกลุ่ม <b>Dealer-PEA Regional</b> ขอหนังสือแต่งตั้งตัวแทนจำหน่ายจาก PEM เพื่อใช้ยื่นเข้างานตกลงราคา
        ของการไฟฟ้าส่วนภูมิภาค ระบุสินค้า จำนวน เขตการไฟฟ้า และช่วงเวลาที่ต้องการให้มีผล</p>
   </div>
@@ -853,10 +854,14 @@ function viewReward() {
   ];
   const monthly = PERF.slice(0, NOW_M).map(p => ({ m: p.m, hit: p.actual >= p.target, pc: p.actual / p.target }));
   const bonus = monthly.reduce((s, m) => s + (m.pc >= 1.2 ? 1200 : m.hit ? 500 : 0), 0);
+  const commPaid = LEADS.filter(l => l.step === 5).reduce((s, l) => s + (l.comm || 0), 0);
+  const commDue  = LEADS.filter(l => l.step === 3).reduce((s, l) => s + Math.round(l.value * COMMISSION[l.kind]), 0);
+  const commPipe = LEADS.filter(l => l.step < 3).reduce((s, l) => s + Math.round(l.value * COMMISSION[l.kind]), 0);
+  const commPoints = Math.round(commPaid / 1000 * TIER.point);
 
   return `
   <div class="viewhead">
-    <h1>Rewards</h1>
+    <h1><span class="h1ic">${PEM_ICON.svg('gift', 26)}</span>Rewards</h1>
     <p>คะแนนสะสมและรางวัลที่คำนวณจากผลงานในเมนู Target &amp; Performance
        รูปแบบด้านล่างเป็นข้อเสนอเพื่อพิจารณา ยังไม่ใช่โปรแกรมที่ประกาศใช้</p>
   </div>
@@ -867,8 +872,8 @@ function viewReward() {
 
   <div class="kpirow">
     <div class="kpi"><div class="lab">คะแนนสะสมคงเหลือ</div>
-      <div class="val" style="color:var(--orange)">${D.baht(POINTS + bonus)}</div>
-      <div class="sub">จากยอดซื้อ ${baht(YTD_A)} บาท × ตัวคูณ ${TIER.point.toFixed(2)} (${esc(TIER.name)})</div></div>
+      <div class="val" style="color:var(--orange)">${D.baht(POINTS + bonus + commPoints)}</div>
+      <div class="sub">ยอดซื้อ ${baht(YTD_A)} + ค่าตอบแทน ${baht(commPaid)} บาท × ตัวคูณ ${TIER.point.toFixed(2)}</div></div>
     <div class="kpi"><div class="lab">โบนัสจากการทำถึงเป้ารายเดือน</div><div class="val">${D.baht(bonus)}</div>
       <div class="sub">ทำถึงเป้า ${monthly.filter(m=>m.hit).length} จาก ${monthly.length} เดือน</div></div>
     <div class="kpi"><div class="lab">อัตราการสะสม</div><div class="val">1,000 : 1</div>
@@ -921,10 +926,66 @@ function viewReward() {
   </div>
 
   <div class="card">
+    <h2>${PEM_ICON.svg('coin', 20)} Commission จากงานที่แจ้งเข้ามา</h2>
+    <p>ค่าตอบแทนจากงานที่ท่านส่งต่อให้ PEM ในเมนู <b>แจ้งงาน / ส่งต่อโอกาสขาย</b>
+       จ่ายหลังลูกค้าชำระเงินงวดสุดท้าย และนับรวมเป็นคะแนนสะสมด้วยอัตราเดียวกับยอดซื้อ</p>
+
+    <div class="kpirow" style="grid-template-columns:repeat(3,1fr);margin:18px 0 4px">
+      <div class="kpi"><div class="lab">จ่ายแล้วปีนี้</div>
+        <div class="val" style="color:var(--ok)">${baht(commPaid)}</div>
+        <div class="sub">จาก ${LEADS.filter(l => l.comm).length} งานที่ปิดได้</div></div>
+      <div class="kpi"><div class="lab">รอจ่าย</div>
+        <div class="val">${baht(commDue)}</div>
+        <div class="sub">งานที่ได้แล้วแต่ลูกค้ายังชำระไม่ครบ</div></div>
+      <div class="kpi"><div class="lab">ประมาณการจากงานที่ยังไม่สรุป</div>
+        <div class="val" style="color:var(--muted)">${baht(commPipe)}</div>
+        <div class="sub">คิดจากมูลค่างานที่แจ้งไว้ ยังไม่รับประกันว่าจะได้งาน</div></div>
+    </div>
+
+    <h3 style="font-size:1rem;margin:22px 0 10px;color:var(--blue-dark)">อัตราค่าตอบแทน</h3>
+    <div class="tablewrap">
+      <table><thead><tr><th>ประเภทงาน</th><th class="num">อัตรา</th><th>เงื่อนไข</th></tr></thead>
+      <tbody>
+        <tr><td>งานขายสินค้า</td><td class="num">1.5%</td><td>ต้องแจ้งก่อนที่ PEM จะติดต่อลูกค้ารายนั้นเอง</td></tr>
+        <tr><td>งานบริการและโซลูชัน</td><td class="num">3.0%</td><td>EMS · MES · Solution Factory 4.0 · ติดตั้ง · บำรุงรักษา</td></tr>
+        <tr><td>งานที่ Dealer ร่วมดำเนินการ</td><td class="num">ตกลงเป็นรายกรณี</td><td>เมื่อ Dealer รับผิดชอบติดตั้งหรือดูแลหลังการขายด้วย</td></tr>
+        <tr><td>โบนัสระดับ ${esc(TIER.id)} ${esc(TIER.name)}</td><td class="num">+${((TIER.point - 1) * 100).toFixed(0)}%</td>
+          <td>คูณเพิ่มจากอัตราฐาน ตามระดับคู่ค้าในขณะที่ปิดงาน</td></tr>
+      </tbody></table>
+    </div>
+
+    <h3 style="font-size:1rem;margin:22px 0 10px;color:var(--blue-dark)">รายการค่าตอบแทน</h3>
+    <div class="tablewrap">
+      <table><thead><tr><th>เลขที่งาน</th><th>งาน</th><th>ประเภท</th><th class="num">มูลค่างาน</th>
+        <th class="num">อัตรา</th><th class="num">ค่าตอบแทน</th><th>สถานะ</th></tr></thead>
+      <tbody>${LEADS.map(l => {
+        const rate = COMMISSION[l.kind];
+        const amount = l.comm != null ? l.comm : Math.round(l.value * rate);
+        const paid = l.step === 5, won = l.step === 3, lost = l.step === 4;
+        return `<tr>
+          <td style="white-space:nowrap">${esc(l.id)}</td>
+          <td>${esc(l.name)}</td>
+          <td>${esc(l.kind)}</td>
+          <td class="num">${baht(l.value)}</td>
+          <td class="num">${(rate * 100).toFixed(1)}%</td>
+          <td class="num" style="${lost ? 'color:var(--muted);text-decoration:line-through' : ''}">${baht(amount)}</td>
+          <td>${paid ? '<span class="badge is-ok">จ่ายแล้ว</span>'
+               : won ? '<span class="badge is-warn">รอจ่าย</span>'
+               : lost ? '<span class="badge is-mute">ไม่ได้งาน</span>'
+               : '<span class="badge is-mute">ประมาณการ</span>'}</td></tr>`;
+      }).join('')}</tbody>
+      <tfoot><tr><th colspan="5">รวมที่จ่ายแล้ว</th><th class="num">${baht(commPaid)}</th><th></th></tr></tfoot>
+      </table>
+    </div>
+    <p style="color:var(--muted);font-size:.84rem;margin-top:12px">
+      ค่าตอบแทนหักภาษี ณ ที่จ่ายตามที่กฎหมายกำหนด และโอนเข้าบัญชีที่ลงทะเบียนไว้ภายใน 30 วันหลังลูกค้าชำระครบ</p>
+  </div>
+
+  <div class="card">
     <h2>แลกของรางวัล</h2>
     <div class="tablewrap" style="margin-top:14px">
       <table><thead><tr><th>ของรางวัล</th><th class="num">คะแนน</th><th>รายละเอียด</th><th></th></tr></thead>
-      <tbody>${REDEEM.map(r => { const ok = (POINTS + bonus) >= r.p; return `<tr>
+      <tbody>${REDEEM.map(r => { const ok = (POINTS + bonus + commPoints) >= r.p; return `<tr>
         <td>${esc(r.t)}</td><td class="num">${D.baht(r.p)}</td><td>${esc(r.d)}</td>
         <td>${ok ? '<button class="btn btn--orange btn--sm" type="button" disabled title="รอเปิดใช้งานจริง">แลก</button>'
                  : '<span class="badge is-mute">คะแนนไม่พอ</span>'}</td></tr>`; }).join('')}

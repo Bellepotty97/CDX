@@ -27,13 +27,19 @@
   background:none;font-family:inherit;font-size:.9rem;color:var(--ink);cursor:pointer;text-align:left;line-height:1.35}
 .navbtn:hover{background:var(--tint);color:var(--blue)}
 .navbtn[aria-current=page]{background:var(--blue);color:#fff;font-weight:600}
-.navbtn .n{flex:none;width:22px;height:22px;border-radius:5px;display:grid;place-items:center;
-  background:var(--tint);color:var(--blue-dark);font-size:.74rem;font-weight:700}
-.navbtn[aria-current=page] .n{background:rgba(255,255,255,.22);color:#fff}
+.navbtn .ic{flex:none;width:26px;height:26px;border-radius:6px;display:grid;place-items:center;
+  background:var(--tint);color:var(--blue)}
+.navbtn .ic svg{display:block}
+.navbtn[aria-current=page] .ic{background:rgba(255,255,255,.2);color:#fff}
 .navbtn .tag{margin-left:auto;font-size:.7rem;background:var(--orange);color:#fff;border-radius:999px;padding:1px 7px;font-weight:700}
 .view[hidden]{display:none}
 .viewhead{margin-bottom:20px}
-.viewhead h1{font-size:1.42rem;color:var(--blue-dark)}
+.viewhead h1{font-size:1.42rem;color:var(--blue-dark);display:flex;align-items:center;gap:11px}
+.h1ic{flex:none;width:42px;height:42px;border-radius:10px;display:grid;place-items:center;
+  background:var(--tint);color:var(--blue)}
+.card>h2{display:flex;align-items:center;gap:9px}
+.card>h2 svg{flex:none;color:var(--blue)}
+.badge svg{flex:none}
 .viewhead p{color:var(--muted);font-size:.92rem;margin-top:6px;max-width:78ch}
 
 /* ---------- KPI ---------- */
@@ -84,6 +90,9 @@
 .prod{display:grid;grid-template-columns:1fr auto;gap:12px 18px;align-items:center;background:var(--surface);
   border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
 .prod+.prod{margin-top:10px}
+.prodmain{display:flex;gap:13px;align-items:flex-start;min-width:0}
+.prodic{flex:none;width:38px;height:38px;border-radius:8px;display:grid;place-items:center;
+  background:var(--tint);color:var(--blue);margin-top:2px}
 .prod h3{font-size:.95rem}
 .prod .meta{font-size:.78rem;color:var(--muted);margin-top:2px}
 .prod .lt{font-size:.78rem;margin-top:4px}
@@ -194,6 +203,7 @@
 
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true"><div id="modalBody"></div></div>
 
+<script src="assets/icons.js"></script>
 <script src="data/dealer-config.js"></script>
 <script src="data/catalog.js"></script>
 <script src="assets/dealer-portal.js"></script>
