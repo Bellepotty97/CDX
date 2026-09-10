@@ -73,16 +73,6 @@ img{max-width:100%;display:block}
   width:44px;height:40px;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
 .burger span{width:20px;height:2px;background:var(--ink)}
 
-/* ---------- hero ---------- */
-.hero{background:linear-gradient(115deg,var(--blue-deep),var(--blue-dark) 55%,#0d5a97);color:#fff;position:relative;overflow:hidden}
-.hero .wrap{padding-top:76px;padding-bottom:76px;position:relative;z-index:2;max-width:900px}
-.hero .kick{color:#8ec5ee;font-size:.92rem;margin-bottom:14px}
-.hero h1{font-size:clamp(1.9rem,4vw,3rem);font-weight:700;letter-spacing:-.02em}
-.hero p{color:#c7dcee;margin-top:18px;max-width:60ch}
-.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
-.hero::after{content:"";position:absolute;right:-120px;top:-80px;width:520px;height:520px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,rgba(245,130,32,.28),transparent 62%)}
-
 /* ---------- products (PEM) ---------- */
 .prodsec{background:var(--tint);border-bottom:1px solid var(--line)}
 .owner{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
@@ -155,15 +145,41 @@ img{max-width:100%;display:block}
 .ncard h3{font-size:.98rem;line-height:1.5}
 .ncard .cat{margin-top:auto;padding-top:10px;font-size:.78rem;color:var(--blue)}
 
-/* ---------- rail ---------- */
-.rail{position:fixed;right:16px;bottom:16px;z-index:80;display:flex;flex-direction:column;gap:8px}
-.rail a{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--blue);
-  box-shadow:0 4px 14px rgba(6,42,75,.28)}
-.rail a[data-ch="line"]{background:#06c755}
-.rail a[data-ch="facebook"]{background:#1877f2}
-.rail a[data-ch="telegram"]{background:#29a0da}
-.rail a[data-ch="email"]{background:#586a7c}
-.rail a:hover{filter:brightness(1.08)}
+/* ---------- contact ---------- */
+.ctgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:30px}
+.ctcard{background:#fff;border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:var(--r);
+  padding:22px 24px;display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s,transform .15s}
+.ctcard:hover{box-shadow:0 10px 26px rgba(10,61,107,.13);transform:translateY(-2px)}
+.ctcard.is-dealer{border-top-color:var(--orange)}
+.ctcard.is-care{border-top-color:var(--muted)}
+.ctcard h3{font-size:1.05rem;color:var(--blue-dark)}
+.ctcard p{color:var(--muted);font-size:.9rem}
+.ctgo{margin-top:auto;padding-top:12px;color:var(--blue);font-weight:600;font-size:.88rem;align-self:flex-start}
+.ctgo::after{content:" \2192"}
+.ctcard.is-dealer .ctgo{color:var(--orange)}
+.ctcard.is-care .ctgo{color:var(--muted)}
+.ctinfo{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r);padding:24px 26px}
+.ctinfo h3{font-size:1rem;color:var(--blue-dark);margin-bottom:10px}
+.ctinfo p{color:var(--muted);font-size:.92rem;margin-top:6px}
+.ctinfo a{color:var(--blue)}
+.ctinfo a:hover{text-decoration:underline}
+.ctname{color:var(--ink);font-weight:600;margin-top:0}
+.ctname.is-en{color:var(--muted);font-weight:500;font-size:.86rem;margin-top:2px}
+.chwrap{margin-top:30px;text-align:center}
+.chlabel{color:var(--muted);font-size:.88rem;margin-bottom:14px}
+.chgrid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.chbtn{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:999px;
+  color:#fff;font-weight:600;font-size:.9rem;background:var(--blue);transition:filter .15s}
+.chbtn[data-ch="email"]{background:#586a7c}
+.chbtn[data-ch="facebook"]{background:#1877f2}
+.chbtn[data-ch="line"]{background:#06c755}
+.chbtn[data-ch="telegram"]{background:#29a0da}
+.chbtn:hover{filter:brightness(1.1)}
+@media (max-width:900px){
+  .ctgrid{grid-template-columns:1fr}
+  .ctinfo{grid-template-columns:1fr}
+}
 
 /* ---------- footer ---------- */
 .ft{background:var(--blue-dark);color:#c5daea;padding:52px 0 0;font-size:.9rem}
@@ -205,15 +221,12 @@ img{max-width:100%;display:block}
 <!-- ================= UTILITY BAR ================= -->
 <div class="util">
   <div class="wrap">
-    <a href="tel:029109700">02-910-9700-12</a>
     <a href="tel:0922836660">092-283-6660 (ฝ่ายขาย)</a>
-    <span class="sp"></span>
-    <a href="#products">สินค้าและบริการ (PEM)</a>
   </div>
 </div>
 
 <!-- ================= HEADER ================= -->
-<header class="hdr">
+<header class="hdr" id="top">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="หน้าแรก">
       <img src="https://precise.co.th/storage/2024/09/logo-pcc-01_0.png" alt="บริษัท พรีไซซ คอร์ปอเรชั่น จำกัด (มหาชน)">
@@ -321,19 +334,6 @@ img{max-width:100%;display:block}
     </ul>
   </div>
 </header>
-
-<!-- ================= HERO ================= -->
-<section class="hero" id="top">
-  <div class="wrap">
-    <p class="kick">วิสัยทัศน์</p>
-    <h1>มุ่งสู่การเป็นผู้นำด้านดิจิทัลกริดอัจฉริยะ พลังงานหมุนเวียน และนวัตกรรมจากไผ่</h1>
-    <p>กลุ่มพรีไซซ ดำเนินธุรกิจด้าน Smart Grid Digitalization ผลิตภัณฑ์นวัตกรรมที่ทำจากไผ่ และโซลูชั่นด้านดิจิทัล ระบบอัตโนมัติและความยั่งยืน เพื่อการพัฒนาอย่างยั่งยืนในภูมิภาคกัมพูชา ลาว พม่า และไทย</p>
-    <div class="cta">
-      <a class="btn btn--orange" href="#products">สินค้าและบริการ</a>
-      <a class="btn btn--solid" href="#business">ธุรกิจของเรา</a>
-    </div>
-  </div>
-</section>
 
 <!-- ================= สินค้าและบริการ (PEM) ================= -->
 <section class="sec prodsec" id="products">
@@ -481,40 +481,54 @@ img{max-width:100%;display:block}
 <section class="sec" id="contact" style="background:var(--tint)">
   <div class="wrap">
     <div class="sec-title">
-      <h2>ติดต่อฝ่ายขายสินค้า (PEM)</h2>
-      <p>สอบถามสินค้า ขอใบเสนอราคา หรือสมัครเป็นตัวแทนจำหน่าย</p>
+      <h2>ติดต่อเรา</h2>
+      <p>เลือกเรื่องที่ต้องการติดต่อ ทีมงานจะติดต่อกลับโดยเร็วที่สุด</p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start" class="know">
-      <div style="background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px">
+
+    <div class="ctgrid">
+      <a class="ctcard" href="#" title="รอเชื่อมไปยังฟอร์มขอใบเสนอราคา">
+        <h3>ขอใบเสนอราคา</h3>
+        <p>สอบถามสินค้า ขอราคา และกำหนดส่งมอบ สำหรับลูกค้าและผู้รับเหมา</p>
+        <span class="ctgo ph">เริ่มต้น</span>
+      </a>
+      <a class="ctcard is-dealer" href="#" title="รอเชื่อมไปยังฟอร์มสมัครตัวแทนจำหน่าย">
+        <h3>สนใจเป็น Dealer ของเรา</h3>
+        <p>สมัครเป็นตัวแทนจำหน่ายสินค้า PEM และสอบถามเงื่อนไขการเป็นคู่ค้า</p>
+        <span class="ctgo ph">สมัคร</span>
+      </a>
+      <a class="ctcard is-care" href="#" title="รอเชื่อมไปยังฟอร์มแจ้งเรื่อง">
+        <h3>แจ้งปัญหา ข้อร้องเรียน ข้อเสนอแนะ</h3>
+        <p>แจ้งเรื่องหลังการขาย งานบริการ หรือข้อเสนอแนะเพื่อการปรับปรุง</p>
+        <span class="ctgo ph">แจ้งเรื่อง</span>
+      </a>
+    </div>
+
+    <div class="ctinfo">
+      <div>
         <h3>โรงงาน (PEM)</h3>
-        <p style="color:var(--muted);margin-top:8px">103/2 หมู่ 6 ถนนติวานนท์ ต.บ้านใหม่ อ.เมืองปทุมธานี จ.ปทุมธานี 12000</p>
-        <p style="color:var(--muted);margin-top:6px">โทร 02-961-4501-25 · info@precise.co.th</p>
-        <h3 style="margin-top:20px">ฝ่ายขาย</h3>
-        <p style="color:var(--muted);margin-top:8px">1/333 หมู่ 9 ต.บางพูด อ.ปากเกร็ด จ.นนทบุรี 11120</p>
+        <p class="ctname">บริษัท พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง จำกัด</p>
+        <p class="ctname is-en">Precise Electric Manufacturing Co., Ltd.</p>
+        <p>103/2 หมู่ 6 ถนนติวานนท์ ต.บ้านใหม่ อ.เมืองปทุมธานี จ.ปทุมธานี 12000</p>
+        <p><a href="tel:029614501">02-961-4501-25</a> · <a href="mailto:info@precise.co.th">info@precise.co.th</a></p>
       </div>
-      <div style="background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px">
-        <h3>สำนักงานใหญ่ (PCC)</h3>
-        <p style="color:var(--muted);margin-top:8px">1842 ถนนกรุงเทพ-นนทบุรี แขวงวงศ์สว่าง เขตบางซื่อ กทม 10800</p>
-        <p style="color:var(--muted);margin-top:6px">โทร 02-910-9700-12 · 092-283-6660 (ฝ่ายขาย)</p>
-        <p style="margin-top:18px"><a class="btn btn--orange" href="#products">ดูสินค้าและบริการ</a></p>
+      <div>
+        <h3>ฝ่ายขาย</h3>
+        <p>1/333 หมู่ 9 ต.บางพูด อ.ปากเกร็ด จ.นนทบุรี 11120</p>
+        <p><a href="tel:0922836660">092-283-6660 (ฝ่ายขาย)</a></p>
+      </div>
+    </div>
+
+    <div class="chwrap">
+      <p class="chlabel">ช่องทางติดต่ออื่น</p>
+      <div class="chgrid">
+        <a class="chbtn" data-ch="email" href="mailto:info@precise.co.th"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> อีเมล</a>
+        <a class="chbtn" data-ch="facebook" href="#" title="รอลิงก์เพจ Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8.5V7c0-.7.5-1 1-1h1.5V3.2C16 3.1 15 3 14 3c-2.3 0-3.9 1.4-3.9 4v1.5H7.5V12h2.6v9h3.3v-9h2.5l.5-3.5H14z"/></svg> Facebook</a>
+        <a class="chbtn" data-ch="line" href="#" title="รอ LINE OA ID"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.9 3 2.8 6.3 2.8 10.4c0 3.7 3.3 6.8 7.7 7.4.3.1.7.2.8.5.1.3.1.6 0 .9l-.1.8c0 .2-.2.9.8.5s5.3-3.1 7.2-5.3c1.3-1.4 1.9-2.9 1.9-4.8C21.2 6.3 17.1 3 12 3zM8.3 12.8h-2c-.3 0-.5-.2-.5-.5V9c0-.3.2-.5.5-.5s.5.2.5.5v2.8h1.5c.3 0 .5.2.5.5s-.2.5-.5.5zm2.1-.5c0 .3-.2.5-.5.5s-.5-.2-.5-.5V9c0-.3.2-.5.5-.5s.5.2.5.5v3.3zm4 0c0 .2-.1.4-.4.5h-.2c-.2 0-.3-.1-.4-.2l-1.7-2.3v2c0 .3-.2.5-.5.5s-.5-.2-.5-.5V9c0-.2.1-.4.4-.5.2-.1.5 0 .6.2l1.7 2.3V9c0-.3.2-.5.5-.5s.5.2.5.5v3.3zm3.1-2.2c.3 0 .5.2.5.5s-.2.5-.5.5h-1.5v.7h1.5c.3 0 .5.2.5.5s-.2.5-.5.5h-2c-.3 0-.5-.2-.5-.5V9c0-.3.2-.5.5-.5h2c.3 0 .5.2.5.5s-.2.5-.5.5h-1.5v.6h1.5z"/></svg> LINE</a>
+        <a class="chbtn" data-ch="telegram" href="#" title="รอลิงก์ Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.3 4.3 2.9 11.4c-.9.3-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.2.6 1 .8 1.4.3l2.5-2.5 4.6 3.4c.6.4 1.4.1 1.6-.6l3.3-14.9c.2-.9-.7-1.6-1.5-1.3zM9.7 14.2l8.1-5.6-6.6 6.8-.3 3.1-1.2-4.3z"/></svg> Telegram</a>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ================= CHANNEL RAIL ================= -->
-<nav class="rail" aria-label="ช่องทางติดต่อ">
-  <a data-ch="line" href="#" title="LINE — รอ LINE OA ID" aria-label="LINE">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.9 3 2.8 6.3 2.8 10.4c0 3.7 3.3 6.8 7.7 7.4.3.1.7.2.8.5.1.3.1.6 0 .9l-.1.8c0 .2-.2.9.8.5s5.3-3.1 7.2-5.3c1.3-1.4 1.9-2.9 1.9-4.8C21.2 6.3 17.1 3 12 3zM8.3 12.8h-2c-.3 0-.5-.2-.5-.5V9c0-.3.2-.5.5-.5s.5.2.5.5v2.8h1.5c.3 0 .5.2.5.5s-.2.5-.5.5zm2.1-.5c0 .3-.2.5-.5.5s-.5-.2-.5-.5V9c0-.3.2-.5.5-.5s.5.2.5.5v3.3zm4 0c0 .2-.1.4-.4.5h-.2c-.2 0-.3-.1-.4-.2l-1.7-2.3v2c0 .3-.2.5-.5.5s-.5-.2-.5-.5V9c0-.2.1-.4.4-.5.2-.1.5 0 .6.2l1.7 2.3V9c0-.3.2-.5.5-.5s.5.2.5.5v3.3zm3.1-2.2c.3 0 .5.2.5.5s-.2.5-.5.5h-1.5v.7h1.5c.3 0 .5.2.5.5s-.2.5-.5.5h-2c-.3 0-.5-.2-.5-.5V9c0-.3.2-.5.5-.5h2c.3 0 .5.2.5.5s-.2.5-.5.5h-1.5v.6h1.5z"/></svg></a>
-  <a data-ch="facebook" href="#" title="Facebook — รอลิงก์เพจ" aria-label="Facebook">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8.5V7c0-.7.5-1 1-1h1.5V3.2C16 3.1 15 3 14 3c-2.3 0-3.9 1.4-3.9 4v1.5H7.5V12h2.6v9h3.3v-9h2.5l.5-3.5H14z"/></svg></a>
-  <a data-ch="telegram" href="#" title="Telegram — รอลิงก์" aria-label="Telegram">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21.3 4.3 2.9 11.4c-.9.3-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.2.6 1 .8 1.4.3l2.5-2.5 4.6 3.4c.6.4 1.4.1 1.6-.6l3.3-14.9c.2-.9-.7-1.6-1.5-1.3zM9.7 14.2l8.1-5.6-6.6 6.8-.3 3.1-1.2-4.3z"/></svg></a>
-  <a data-ch="email" href="mailto:info@precise.co.th" title="อีเมล" aria-label="อีเมล">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
-  <a data-ch="phone" href="tel:029614501" title="โทรศัพท์" aria-label="โทรศัพท์">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h4l2 5-2.5 1.5a12 12 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg></a>
-</nav>
 
 <!-- ================= FOOTER ================= -->
 <footer class="ft">
