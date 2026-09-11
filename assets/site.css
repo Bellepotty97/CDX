@@ -46,7 +46,6 @@ img{max-width:100%;display:block}
   background:none;border:0;font-family:inherit;color:var(--ink);cursor:pointer;border-radius:var(--r)}
 .nav .top:hover{color:var(--blue);background:var(--tint)}
 .nav .cur{color:var(--blue)}
-.nav .hot{color:var(--orange);font-weight:600}
 .caret{width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px)}
 .sub{position:absolute;top:100%;right:0;min-width:260px;background:#fff;border:1px solid var(--line);
   border-radius:var(--r);box-shadow:0 14px 30px rgba(10,61,107,.14);padding:6px;display:none;list-style:none;margin:0}
@@ -69,6 +68,28 @@ img{max-width:100%;display:block}
 .burger{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:var(--r);
   width:44px;height:40px;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
 .burger span{width:20px;height:2px;background:var(--ink)}
+
+/* ---------- แบนเนอร์หน้าแรก ---------- */
+.hero{position:relative;min-height:clamp(400px,58vh,640px);display:grid;place-items:center;
+  padding:64px 0;color:#fff;text-align:center;overflow:hidden;
+  background-color:var(--blue-dark);
+  background-image:
+    radial-gradient(ellipse at 50% 45%, rgba(6,42,75,.62) 0%, rgba(6,42,75,.42) 52%, rgba(6,42,75,.66) 100%),
+    url("assets/hero-home.jpg");
+  background-size:cover;background-position:center;background-repeat:no-repeat}
+.hero .wrap{position:relative;z-index:2;max-width:760px}
+.hero h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;letter-spacing:-.02em;line-height:1.15;
+  text-shadow:0 2px 18px rgba(6,42,75,.55)}
+.hero p{color:#e2eef8;margin-top:18px;font-size:clamp(.98rem,1.6vw,1.12rem);max-width:62ch;
+  margin-inline:auto;text-shadow:0 1px 12px rgba(6,42,75,.6)}
+.hero .cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.hero .btn{padding:14px 30px;font-size:1rem;display:inline-flex;align-items:center;gap:10px}
+.hero .btn--ghost{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.45);
+  backdrop-filter:blur(2px)}
+.hero .btn--ghost:hover{background:rgba(255,255,255,.2);border-color:#fff}
+@media (max-width:560px){.hero{min-height:auto;padding:54px 0}
+  .hero .cta{flex-direction:column;align-items:stretch}
+  .hero .btn{justify-content:center}}
 
 /* ---------- ไอคอน ---------- */
 .ico{display:inline-grid;place-items:center;flex:none;color:var(--blue)}
