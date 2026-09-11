@@ -28,6 +28,11 @@ img{max-width:100%;display:block}
 .sec-title{text-align:center;margin-bottom:36px}
 .sec-title h2{font-size:clamp(1.6rem,3vw,2.3rem);color:var(--blue-dark)}
 .sec-title p{color:var(--muted);margin-top:10px}
+.sec-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:22px}
+.sec-cta .btn{display:inline-flex;align-items:center;gap:9px}
+.sec-cta .ico{color:currentColor}
+@media (max-width:560px){.sec-cta{flex-direction:column;align-items:stretch}
+  .sec-cta .btn{justify-content:center}}
 .btn{display:inline-block;padding:11px 24px;border-radius:var(--r);font-weight:600;font-size:.95rem;
   border:1px solid transparent;cursor:pointer;transition:background .15s,color .15s;font-family:inherit}
 .btn--solid{background:var(--blue);color:#fff}.btn--solid:hover{background:#0c5b96}
@@ -362,15 +367,23 @@ img{max-width:100%;display:block}
       <span class="owner">ผลิตและจำหน่ายโดย <b>บริษัท พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง จำกัด (PEM)</b></span>
       <h2><span class="ico" data-icon="box" data-icon-size="20"></span>สินค้าและบริการ</h2>
       <p>สินค้า 446 รายการ ใน 17 กลุ่มหลัก (อ้างอิง Price List ประกาศใช้ 1 มิถุนายน 2569) และงานบริการที่ประเมินราคารายโครงการ</p>
+      <div class="sec-cta">
+        <a class="btn btn--orange" href="#catalog" id="allProducts">
+          <span class="ico" data-icon="box" data-icon-size="18"></span>ดูสินค้าทั้งหมด 446 รายการ</a>
+        <a class="btn btn--solid" href="#services">
+          <span class="ico" data-icon="install" data-icon-size="18"></span>งานบริการและโซลูชัน</a>
+        <a class="btn btn--line" href="#contact">
+          <span class="ico" data-icon="quote" data-icon-size="18"></span>ขอใบเสนอราคา</a>
+      </div>
     </div>
 
-    <div class="searchbar">
+    <div class="searchbar" id="catalog">
       <label for="q" style="position:absolute;left:-9999px">ค้นหาสินค้า</label>
       <input id="q" type="search" placeholder="ค้นหาชื่อรุ่น พิกัด หรือรหัสสินค้า เช่น 250kVA, CT, CA-F-99" autocomplete="off">
       <button class="btn btn--solid" type="button" id="clearBtn">ล้าง</button>
     </div>
 
-    <div class="chips" id="chips"></div>
+    <div class="chips" id="chips" tabindex="-1"></div>
     <p class="catmeta" id="catmeta"></p>
     <div class="plist" id="plist"></div>
     <p style="text-align:center;margin-top:24px">
@@ -690,6 +703,14 @@ document.getElementById('clearBtn').addEventListener('click', () => { q.value = 
 document.querySelectorAll('.mega ul a[data-core]').forEach(a => {
   a.insertAdjacentHTML('afterbegin',
     `<span class="ico">${PEM_ICON.svg(PEM_ICON.byCore(a.dataset.core), 15)}</span>`);
+});
+
+// ปุ่ม "ดูสินค้าทั้งหมด" ต้องล้างคำค้นและตัวกรองก่อน ไม่งั้นจะเลื่อนลงไปเจอผลที่ถูกกรองอยู่
+document.getElementById('allProducts').addEventListener('click', () => {
+  activeCore = null;
+  q.value = '';
+  chipsEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('is-on', c.dataset.core === ''));
+  apply();
 });
 
 buildChips();
