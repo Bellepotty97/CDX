@@ -73,9 +73,16 @@ img{max-width:100%;display:block}
 .hero{position:relative;min-height:clamp(400px,58vh,640px);display:grid;place-items:center;
   padding:64px 0;color:#fff;text-align:center;overflow:hidden;
   background-color:var(--blue-dark);
+  /* url ใน CSS อ้างอิงจากตำแหน่งของไฟล์ CSS เอง ไม่ใช่จากหน้า HTML
+     ไฟล์นี้อยู่ใน assets/ อยู่แล้ว จึงเขียนชื่อไฟล์ตรง ๆ ไม่ต้องมี assets/ นำหน้า
+     วางรูปซ้อนหลายนามสกุล ชั้นบนสุดที่โหลดได้จะเป็นชั้นที่แสดง
+     อัปโหลดไฟล์ชื่อ hero-home นามสกุลใดก็ได้ลงใน assets/ แล้วรูปจะขึ้นเอง */
   background-image:
     radial-gradient(ellipse at 50% 45%, rgba(6,42,75,.62) 0%, rgba(6,42,75,.42) 52%, rgba(6,42,75,.66) 100%),
-    url("assets/hero-home.jpg");
+    url("hero-home.jpg"),
+    url("hero-home.jpeg"),
+    url("hero-home.png"),
+    url("hero-home.webp");
   background-size:cover;background-position:center;background-repeat:no-repeat}
 .hero .wrap{position:relative;z-index:2;max-width:760px}
 .hero h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;letter-spacing:-.02em;line-height:1.15;
