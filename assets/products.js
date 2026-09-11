@@ -104,6 +104,17 @@ q.addEventListener('input', () => apply());
 document.getElementById('clearBtn').addEventListener('click', () => {
   q.value = ''; activeCore = null; apply(); q.focus();
 });
+// กดเมนู "สินค้าและบริการ" ขณะอยู่หน้านี้อยู่แล้ว ให้ล้างตัวกรองแล้วเลื่อนขึ้นบน
+// แทนการโหลดหน้าใหม่ทั้งหน้า
+document.addEventListener('click', e => {
+  const a = e.target.closest('a.top[href]');
+  if (!a || a.dataset.core) return;
+  if (new URL(a.href, location.href).pathname !== location.pathname) return;
+  e.preventDefault();
+  activeCore = null; q.value = ''; apply();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
 const allBtn = document.getElementById('allProducts');
 if (allBtn) allBtn.addEventListener('click', e => {
   e.preventDefault();
