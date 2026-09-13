@@ -86,10 +86,13 @@ function renderProduct(r) {
 
   $('#detail').innerHTML = `
     <div class="detail">
-      <div class="shot"><img src="${L.imgForCore(r.core)}" alt="ภาพประกอบกลุ่มสินค้า ${esc(r.core)}" width="480" height="360">
+      <div class="shot"><img ${L.imgAttrs(r.core)} alt="ภาพสินค้ากลุ่ม ${esc(r.core)}" width="480" height="360">
+        ${L.fallbackFor(r.core) ? `
+        <p style="padding:11px 14px;font-size:.8rem;color:var(--muted);background:#fff;border-top:1px solid var(--line)">
+          ภาพตัวอย่างกลุ่ม ${esc(r.core)} รายละเอียดตัวเครื่องอาจต่างกันตามรุ่น</p>` : `
         <p style="padding:11px 14px;font-size:.8rem;color:var(--muted);background:#fff;border-top:1px solid var(--line)">
           <span class="ph" title="ยังไม่มีภาพถ่ายสินค้าจริง ใช้ภาพประกอบกลุ่มสินค้าไปก่อน">
-          ภาพประกอบกลุ่มสินค้า ยังไม่ใช่ภาพถ่ายสินค้าจริง</span></p>
+          ภาพประกอบกลุ่มสินค้า ยังไม่ใช่ภาพถ่ายสินค้าจริง</span></p>`}
       </div>
       <div>
         <div class="tags">
@@ -119,8 +122,8 @@ function renderProduct(r) {
       <h2>สินค้าอื่นในกลุ่ม ${esc(r.core)}</h2>
       <div class="cardgrid">${related.map(x => `
         <article class="pcard">
-          <a class="shot" href="product.html?i=${x.i}"><img src="${L.imgForCore(x.core)}"
-             alt="ภาพประกอบกลุ่มสินค้า ${esc(x.core)}" loading="lazy" width="480" height="360"></a>
+          <a class="shot" href="product.html?i=${x.i}"><img ${L.imgAttrs(x.core)}
+             alt="ภาพสินค้ากลุ่ม ${esc(x.core)}" loading="lazy" width="480" height="360"></a>
           <div class="body"><h3>${esc(x.name)}</h3>
             <p class="meta">รหัส ${esc(x.code)}</p>
             <p class="desc">${esc(L.shortDesc(x))}</p>

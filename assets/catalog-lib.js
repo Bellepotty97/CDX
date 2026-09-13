@@ -8,8 +8,28 @@ window.PEM_LIB = (function () {
 
   const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-  const imgForCore    = core => 'assets/img/' + slug(core) + '.svg';
-  const imgForService = id   => 'assets/img/service-' + id + '.svg';
+  // กลุ่มสินค้าที่มีภาพถ่ายจริงแล้ว ให้ใช้ภาพถ่ายแทนภาพประกอบที่สร้างขึ้น
+  // วางไฟล์ชื่อ photo-<slug> ใน assets/img/ นามสกุลใดก็ได้ในสี่แบบนี้ แล้วรูปจะขึ้นเอง
+  const PHOTO = ['Distribution Transformer', 'Power Capacitor'];
+  const EXT = ['jpg', 'jpeg', 'png', 'webp'];
+
+  const svgForCore = core => 'assets/img/' + slug(core) + '.svg';
+  const imgForCore = core =>
+    PHOTO.indexOf(core) >= 0 ? 'assets/img/photo-' + slug(core) + '.' + EXT[0] : svgForCore(core);
+  const imgForService = id => 'assets/img/service-' + id + '.svg';
+
+  // ลำดับสำรองเมื่อไฟล์แรกโหลดไม่ได้ ไล่นามสกุลที่เหลือแล้วจบที่ภาพประกอบ SVG
+  // ทำให้อัปโหลดไฟล์นามสกุลใดก็ได้โดยไม่ต้องแก้โค้ด และหน้าไม่พังถ้ายังไม่มีไฟล์
+  function fallbackFor(core) {
+    if (PHOTO.indexOf(core) < 0) return '';
+    const base = 'assets/img/photo-' + slug(core) + '.';
+    return EXT.slice(1).map(e => base + e).concat(svgForCore(core)).join(',');
+  }
+  // แอตทริบิวต์พร้อมใส่ในแท็ก img
+  const imgAttrs = core => {
+    const fb = fallbackFor(core);
+    return `src="${imgForCore(core)}"` + (fb ? ` data-fallback="${fb}"` : '');
+  };
 
   // แปลงแถวในแคตตาล็อกเป็นวัตถุที่อ่านง่าย
   const row = i => {
@@ -56,5 +76,18 @@ window.PEM_LIB = (function () {
     return r.type;
   }
 
-  return { esc, slug, imgForCore, imgForService, row, rows, specs, shortDesc };
+  // เปลี่ยนรูปเป็นไฟล์ถัดไปในลำดับสำรองเมื่อโหลดไม่สำเร็จ
+  // เหตุการณ์ error ของ img ไม่ bubble จึงต้องดักที่ช่วง capture
+  document.addEventListener('error', e => {
+    const t = e.target;
+    if (!t || t.tagName !== 'IMG' || !t.dataset.fallback) return;
+    const list = t.dataset.fallback.split(',');
+    const next = list.shift();
+    if (list.length) t.dataset.fallback = list.join(',');
+    else t.removeAttribute('data-fallback');
+    if (next) t.src = next;
+  }, true);
+
+  return { esc, slug, imgForCore, imgForService, svgForCore, imgAttrs, fallbackFor,
+           row, rows, specs, shortDesc };
 })();

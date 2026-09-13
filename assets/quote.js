@@ -18,7 +18,7 @@ const idx = parseInt(p.get('i'), 10);
 if (sid) {
   const s = S.find(x => x.id === sid);
   if (s) item = {
-    kind:'service', title:s.name, sub:s.full, img:L.imgForService(s.id),
+    kind:'service', title:s.name, sub:s.full, imgAttrs:'src="'+L.imgForService(s.id)+'"',
     interest:'งานบริการ: ' + s.name,
     fields:[['ประเภท','งานบริการและโซลูชัน'],['รูปแบบราคา','ประเมินเป็นรายโครงการ']],
     back:'product.html?s=' + encodeURIComponent(s.id),
@@ -27,7 +27,7 @@ if (sid) {
   const r = L.row(idx);
   const sp = L.specs(r.name);
   item = {
-    kind:'product', title:r.name, sub:r.core, img:L.imgForCore(r.core),
+    kind:'product', title:r.name, sub:r.core, imgAttrs:L.imgAttrs(r.core),
     interest:'สินค้า: ' + r.name + ' (รหัส ' + r.code + ')',
     fields:[['รหัสสินค้า',r.code],['กลุ่มสินค้า',r.core],['ประเภท',r.type]]
       .concat(sp.slice(0,3).map(x => [x.label, x.value])),
@@ -39,7 +39,7 @@ if (sid) {
 function drawSide() {
   $('#sidecol').innerHTML = (item ? `
     <div class="qcard">
-      <div class="shot"><img src="${item.img}" alt="ภาพประกอบ ${esc(item.title)}" width="480" height="360"></div>
+      <div class="shot"><img ${item.imgAttrs} alt="ภาพประกอบ ${esc(item.title)}" width="480" height="360"></div>
       <div class="b">
         <p class="meta">${esc(item.kind === 'service' ? 'งานบริการและโซลูชัน' : item.sub)}</p>
         <h3>${esc(item.title)}</h3>

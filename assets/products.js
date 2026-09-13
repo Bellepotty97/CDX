@@ -82,7 +82,7 @@ const showingServices = () => sel.kind === 'svcAll' || sel.kind === 'svc';
 function productCard(r) {
   return `<article class="pcard">
     <a class="shot" href="product.html?i=${r.i}" aria-label="${esc(r.name)}">
-      <img src="${L.imgForCore(r.core)}" alt="ภาพประกอบกลุ่มสินค้า ${esc(r.core)}" loading="lazy" width="480" height="360">
+      <img ${L.imgAttrs(r.core)} alt="ภาพสินค้ากลุ่ม ${esc(r.core)}" loading="lazy" width="480" height="360">
     </a>
     <div class="body">
       <h3>${esc(r.name)}</h3>
