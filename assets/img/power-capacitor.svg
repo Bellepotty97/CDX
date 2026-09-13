@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360" role="img" aria-label="Power Capacitor">
+<defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1583cf"/><stop offset="1" stop-color="#0a3d6b"/></linearGradient>
+  <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+    <path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity=".10" stroke-width="1"/></pattern>
+  <radialGradient id="glow" cx="50%" cy="42%" r="55%">
+    <stop offset="0" stop-color="#fff" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="480" height="360" fill="url(#g)"/>
+<rect width="480" height="360" fill="url(#grid)"/>
+<rect width="480" height="360" fill="url(#glow)"/>
+<g transform="translate(168 84) scale(6)" fill="none" fill-opacity="1"
+   stroke="#fff" stroke-opacity=".92" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h6M15 12h6"/><path d="M9 5v14M15 5v14"/></g>
+<rect y="296" width="480" height="64" fill="#062a4b" fill-opacity=".55"/>
+<text x="24" y="334" fill="#fff" font-family="'IBM Plex Sans Thai','Noto Sans Thai',sans-serif"
+      font-size="21" font-weight="600">Power Capacitor</text>
+</svg>

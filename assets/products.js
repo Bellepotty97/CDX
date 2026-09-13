@@ -1,130 +1,207 @@
-/* แคตตาล็อกสินค้าในหน้าสินค้าและบริการ
-   ต่างจากเวอร์ชันเดิมที่ฝังอยู่ในหน้าแรกตรงที่ ตัวกรองและคำค้นถูกเขียนลง URL
-   ทำให้แชร์ลิงก์ที่กรองไว้แล้วได้ กดปุ่มย้อนกลับได้ และยิงโฆษณาเข้ากลุ่มสินค้าตรง ๆ ได้ */
+/* หน้าสินค้าและบริการ — เลย์เอาต์สองคอลัมน์
+   คอลัมน์ซ้ายคือประเภทสินค้าและบริการ คอลัมน์ขวาคือการ์ดของประเภทที่เลือก
+   ข้อมูลทั้งหมดมาจาก data/catalog.js และ data/services.js ไม่มีการเพิ่มข้อมูลใหม่ */
 (function () {
 'use strict';
 
-const CAT = window.PEM_CATALOG;
-const chipsEl = document.getElementById('chips');
-const listEl  = document.getElementById('plist');
-const metaEl  = document.getElementById('catmeta');
-const moreBtn = document.getElementById('moreBtn');
-const q       = document.getElementById('q');
-const PAGE = 40;
-let activeCore = null, shown = PAGE, matches = [];
+const C = window.PEM_CATALOG;
+const S = window.PEM_SERVICES;
+const L = window.PEM_LIB;
+const I = window.PEM_ICON;
+const esc = L.esc;
+const $ = s => document.querySelector(s);
 
-const counts = CAT.core.map((_, i) => CAT.items.filter(it => it[0] === i).length);
+const ROWS = L.rows();
+const COUNT = {};
+ROWS.forEach(r => { COUNT[r.core] = (COUNT[r.core] || 0) + 1; });
+const CORES = C.core.slice().sort((a, b) => COUNT[b] - COUNT[a]);
 
-function buildChips() {
-  const order = CAT.core.map((n, i) => [n, i, counts[i]]).sort((a, b) => b[2] - a[2]);
-  chipsEl.innerHTML = `<button class="chip" data-core="">ทั้งหมด <b>${CAT.items.length}</b></button>` +
-    order.map(([n, i, c]) => `<button class="chip" data-core="${i}">${n} <b>${c}</b></button>`).join('');
+const PAGE = 24;
+let sel = { kind: 'all' };   // all | core | svcAll | svc
+let term = '', shown = PAGE;
+
+/* ---------------- คอลัมน์ซ้าย ---------------- */
+function drawSide() {
+  const item = (key, label, icon, count, svc) => `
+    <li><button class="catbtn${svc ? ' is-svc' : ''}" type="button" data-sel="${esc(key)}">
+      <span class="ico">${I.svg(icon, 17)}</span><span>${esc(label)}</span>
+      ${count != null ? `<span class="n">${count}</span>` : ''}
+    </button></li>`;
+
+  $('#catside').innerHTML =
+    '<h3>ประเภทสินค้า</h3><ul>' +
+      item('all', 'สินค้าทั้งหมด', 'box', ROWS.length) +
+      CORES.map(c => item('core:' + c, c, I.byCore(c), COUNT[c])).join('') +
+    '</ul>' +
+    '<h3>งานบริการและโซลูชัน</h3><ul>' +
+      item('svcAll', 'บริการทั้งหมด', 'install', S.length, true) +
+      S.map(s => item('svc:' + s.id, s.name, s.icon, null, true)).join('') +
+    '</ul>';
+
+  $('#catside').querySelectorAll('.catbtn').forEach(b =>
+    b.addEventListener('click', () => { pick(b.dataset.sel); }));
+  markSide();
 }
-function markChips() {
-  chipsEl.querySelectorAll('.chip').forEach(c =>
-    c.classList.toggle('is-on', c.dataset.core === (activeCore === null ? '' : String(activeCore))));
+function selKey() {
+  return sel.kind === 'core' ? 'core:' + sel.value
+       : sel.kind === 'svc'  ? 'svc:' + sel.value
+       : sel.kind;
 }
-
-function apply(push) {
-  const term = q.value.trim().toLowerCase();
-  matches = CAT.items.filter(it => {
-    if (activeCore !== null && it[0] !== activeCore) return false;
-    if (!term) return true;
-    return (it[2] + ' ' + it[3] + ' ' + CAT.core[it[0]] + ' ' + CAT.type[it[1]] + ' ' + it[4]).toLowerCase().includes(term);
+function markSide() {
+  const k = selKey();
+  $('#catside').querySelectorAll('.catbtn').forEach(b => {
+    if (b.dataset.sel === k) b.setAttribute('aria-current', 'true');
+    else b.removeAttribute('aria-current');
   });
+}
+function pick(key) {
+  if (key === 'all')          sel = { kind: 'all' };
+  else if (key === 'svcAll')  sel = { kind: 'svcAll' };
+  else if (key.startsWith('core:')) sel = { kind: 'core', value: key.slice(5) };
+  else if (key.startsWith('svc:'))  sel = { kind: 'svc',  value: key.slice(4) };
   shown = PAGE;
-  markChips();
-  render();
-  if (push !== false) writeUrl();
+  render(); writeUrl();
+  $('#catalog').scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
+/* ---------------- สิ่งที่จะแสดง ---------------- */
+function products() {
+  const t = term.trim().toLowerCase();
+  return ROWS.filter(r => {
+    if (sel.kind === 'core' && r.core !== sel.value) return false;
+    if (!t) return true;
+    return (r.name + ' ' + r.code + ' ' + r.core + ' ' + r.type + ' ' + r.biz).toLowerCase().includes(t);
+  });
+}
+function services() {
+  return sel.kind === 'svc' ? S.filter(s => s.id === sel.value) : S;
+}
+const showingServices = () => sel.kind === 'svcAll' || sel.kind === 'svc';
+
+/* ---------------- การ์ด ---------------- */
+function productCard(r) {
+  return `<article class="pcard">
+    <a class="shot" href="product.html?i=${r.i}" aria-label="${esc(r.name)}">
+      <img src="${L.imgForCore(r.core)}" alt="ภาพประกอบกลุ่มสินค้า ${esc(r.core)}" loading="lazy" width="480" height="360">
+    </a>
+    <div class="body">
+      <h3>${esc(r.name)}</h3>
+      <p class="meta">${esc(r.core)} · รหัส ${esc(r.code)}</p>
+      <p class="desc">${esc(L.shortDesc(r))}</p>
+      <p class="go"><a class="btn btn--line" href="product.html?i=${r.i}">ดูรายละเอียด</a></p>
+    </div>
+  </article>`;
+}
+function serviceCard(s) {
+  return `<article class="pcard is-svc">
+    <a class="shot" href="product.html?s=${esc(s.id)}" aria-label="${esc(s.name)}">
+      <img src="${L.imgForService(s.id)}" alt="ภาพประกอบงานบริการ ${esc(s.name)}" loading="lazy" width="480" height="360">
+    </a>
+    <div class="body">
+      <h3>${esc(s.name)}</h3>
+      <p class="meta">${esc(s.full)}</p>
+      <p class="desc">${esc(s.short)}</p>
+      <p class="go"><a class="btn btn--line" href="product.html?s=${esc(s.id)}">ดูรายละเอียด</a></p>
+    </div>
+  </article>`;
+}
+
+/* ---------------- แสดงผล ---------------- */
 function render() {
-  const label = activeCore !== null ? CAT.core[activeCore] : null;
-  metaEl.textContent = matches.length
-    ? `พบ ${matches.length} รายการ` + (label ? ` ในกลุ่ม ${label}` : '')
-    : 'ไม่พบสินค้าที่ตรงกับคำค้น ลองพิมพ์คำอื่น หรือติดต่อฝ่ายขายโดยตรง';
-  listEl.innerHTML = matches.slice(0, shown).map(it => `
-    <article class="prow">
-      <div class="pmain">
-        <span class="ico">${PEM_ICON.svg(PEM_ICON.byCore(CAT.core[it[0]]), 20)}</span>
-        <div>
-          <h3>${it[2]}</h3>
-          <span class="pmeta">${CAT.core[it[0]]} · ${CAT.type[it[1]]}</span>
-        </div>
-      </div>
-      <span class="pcode">${it[3]}</span>
-      <a class="pask" href="#contact">ขอราคา</a>
-    </article>`).join('');
-  moreBtn.hidden = matches.length <= shown;
-  if (!moreBtn.hidden) moreBtn.textContent = `แสดงเพิ่ม (เหลืออีก ${matches.length - shown})`;
-  document.title = (label ? label + ' — ' : '') +
-    'สินค้าและบริการ หม้อแปลงไฟฟ้า อุปกรณ์ระบบจำหน่าย | PEM พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง';
-}
+  const head = $('#cathead'), list = $('#plist'), more = $('#moreBtn');
+  markSide();
 
-/* ---------- ตัวกรองใน URL ---------- */
+  if (showingServices()) {
+    const items = services();
+    const one = sel.kind === 'svc' ? S.find(s => s.id === sel.value) : null;
+    head.innerHTML = `
+      <div><h2><span class="ico">${I.svg(one ? one.icon : 'install', 20)}</span>${esc(one ? one.name : 'งานบริการและโซลูชัน')}</h2>
+        <p>${one ? esc(one.full) : 'ไม่มีราคากลาง ขอบเขตงานและราคาประเมินเป็นรายโครงการ'}</p></div>`;
+    list.innerHTML = items.map(serviceCard).join('');
+    more.hidden = true;
+    document.title = (one ? one.name + ' — ' : '') + BASE_TITLE;
+    return;
+  }
+
+  const m = products();
+  const title = sel.kind === 'core' ? sel.value : 'สินค้าทั้งหมด';
+  head.innerHTML = `
+    <div><h2><span class="ico">${I.svg(sel.kind === 'core' ? I.byCore(sel.value) : 'box', 20)}</span>${esc(title)}</h2>
+      <p id="catmeta">${m.length ? `พบ ${m.length} รายการ` + (term.trim() ? ` จากคำค้น “${esc(term.trim())}”` : '')
+                                 : 'ไม่พบสินค้าที่ตรงกับคำค้น'}</p></div>`;
+  list.innerHTML = m.length
+    ? m.slice(0, shown).map(productCard).join('')
+    : `<div class="emptymsg" style="grid-column:1/-1">ไม่พบสินค้าที่ตรงกับคำค้น ลองพิมพ์คำอื่น
+         หรือ<a href="#contact" style="color:var(--blue);font-weight:600"> ติดต่อฝ่ายขายโดยตรง</a></div>`;
+  more.hidden = m.length <= shown;
+  if (!more.hidden) more.textContent = `แสดงเพิ่ม (เหลืออีก ${m.length - shown})`;
+  document.title = (sel.kind === 'core' ? sel.value + ' — ' : '') + BASE_TITLE;
+}
+const BASE_TITLE = 'สินค้าและบริการ หม้อแปลงไฟฟ้า อุปกรณ์ระบบจำหน่าย | PEM พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง';
+
+/* ---------------- ตัวกรองใน URL ---------------- */
 function writeUrl() {
   const p = new URLSearchParams();
-  if (activeCore !== null) p.set('core', CAT.core[activeCore]);
-  if (q.value.trim()) p.set('q', q.value.trim());
-  const url = location.pathname + (p.toString() ? '?' + p : '') + location.hash;
-  history.replaceState(null, '', url);
+  if (sel.kind === 'core') p.set('core', sel.value);
+  if (sel.kind === 'svc')  p.set('svc', sel.value);
+  if (sel.kind === 'svcAll') p.set('svc', 'all');
+  if (term.trim()) p.set('q', term.trim());
+  history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : ''));
 }
 function readUrl() {
   const p = new URLSearchParams(location.search);
+  term = p.get('q') || '';
+  $('#q').value = term;
+  const svc = p.get('svc');
   const core = p.get('core');
-  const i = core ? CAT.core.indexOf(core) : -1;
-  activeCore = i >= 0 ? i : null;
-  q.value = p.get('q') || '';
+  if (svc === 'all' || location.hash === '#services') sel = { kind: 'svcAll' };
+  else if (svc && S.some(s => s.id === svc))          sel = { kind: 'svc', value: svc };
+  else if (core && C.core.indexOf(core) >= 0)         sel = { kind: 'core', value: core };
+  else sel = { kind: 'all' };
 }
 
-/* ---------- เหตุการณ์ ---------- */
-chipsEl.addEventListener('click', e => {
-  const b = e.target.closest('.chip');
-  if (!b) return;
-  activeCore = b.dataset.core === '' ? null : +b.dataset.core;
-  apply();
-  document.getElementById('catalog').scrollIntoView({ block:'start', behavior:'smooth' });
-});
-
-// ลิงก์ในเมนูใหญ่และ footer ที่ชี้มาหน้านี้อยู่แล้ว ให้กรองในที่โดยไม่โหลดหน้าใหม่
+/* ---------------- เหตุการณ์ ---------------- */
+// ลิงก์กลุ่มสินค้าในเมนูใหญ่และ footer ชี้มาหน้านี้อยู่แล้ว จึงกรองในที่โดยไม่โหลดหน้าใหม่
 document.addEventListener('click', e => {
   const a = e.target.closest('a[data-core]');
-  if (!a) return;
-  const i = CAT.core.indexOf(a.dataset.core);
-  if (i < 0) return;
-  e.preventDefault();
-  activeCore = i;
-  q.value = '';
-  apply();
-  document.getElementById('catalog').scrollIntoView({ block:'start', behavior:'smooth' });
+  if (a && C.core.indexOf(a.dataset.core) >= 0) {
+    e.preventDefault(); term = ''; $('#q').value = '';
+    pick('core:' + a.dataset.core);
+    return;
+  }
+  const top = e.target.closest('a.top[href]');
+  if (top && !top.dataset.core &&
+      new URL(top.href, location.href).pathname === location.pathname) {
+    e.preventDefault(); term = ''; $('#q').value = '';
+    pick('all'); window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 });
-
-moreBtn.addEventListener('click', () => { shown += PAGE; render(); });
-q.addEventListener('input', () => apply());
-document.getElementById('clearBtn').addEventListener('click', () => {
-  q.value = ''; activeCore = null; apply(); q.focus();
-});
-// กดเมนู "สินค้าและบริการ" ขณะอยู่หน้านี้อยู่แล้ว ให้ล้างตัวกรองแล้วเลื่อนขึ้นบน
-// แทนการโหลดหน้าใหม่ทั้งหน้า
+// ลิงก์ที่ชี้ไป #services ให้เลือกกลุ่มบริการแทนการกระโดดหาสมอที่ไม่มีแล้ว
 document.addEventListener('click', e => {
-  const a = e.target.closest('a.top[href]');
-  if (!a || a.dataset.core) return;
-  if (new URL(a.href, location.href).pathname !== location.pathname) return;
-  e.preventDefault();
-  activeCore = null; q.value = ''; apply();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const a = e.target.closest('a[href$="#services"]');
+  if (!a) return;
+  e.preventDefault(); term = ''; $('#q').value = '';
+  pick('svcAll');
 });
 
+$('#q').addEventListener('input', () => {
+  term = $('#q').value;
+  if (showingServices()) sel = { kind: 'all' };
+  shown = PAGE; render(); writeUrl();
+});
+$('#clearBtn').addEventListener('click', () => {
+  term = ''; $('#q').value = ''; sel = { kind: 'all' };
+  shown = PAGE; render(); writeUrl(); $('#q').focus();
+});
+$('#moreBtn').addEventListener('click', () => { shown += PAGE; render(); });
 const allBtn = document.getElementById('allProducts');
 if (allBtn) allBtn.addEventListener('click', e => {
-  e.preventDefault();
-  activeCore = null; q.value = ''; apply();
-  document.getElementById('catalog').scrollIntoView({ block:'start', behavior:'smooth' });
+  e.preventDefault(); term = ''; $('#q').value = ''; pick('all');
 });
-window.addEventListener('popstate', () => { readUrl(); apply(false); });
+window.addEventListener('popstate', () => { readUrl(); shown = PAGE; render(); });
 
-buildChips();
+drawSide();
 readUrl();
-apply(false);
+render();
 
 })();
