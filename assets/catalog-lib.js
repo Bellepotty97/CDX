@@ -10,7 +10,24 @@ window.PEM_LIB = (function () {
 
   // กลุ่มสินค้าที่มีภาพถ่ายจริงแล้ว ให้ใช้ภาพถ่ายแทนภาพประกอบที่สร้างขึ้น
   // วางไฟล์ชื่อ photo-<slug> ใน assets/img/ นามสกุลใดก็ได้ในสี่แบบนี้ แล้วรูปจะขึ้นเอง
-  const PHOTO = ['Distribution Transformer', 'Power Capacitor'];
+  const PHOTO = [
+    'Distribution Transformer',
+    'Power Capacitor',
+    'Instrument Transformer (Dry Type)',
+    'Instrument Transformer (Oil Type)',
+    'LED',
+    'Load Break Switch',
+    'Surge Arrester',
+    'Fuse',
+    'Suspension Insulator',
+    'Protection Relay',
+    'Recloser',
+    'FRTU',
+    '1-Pole Disconnecting Switch (Vertical Break)',
+    '3-Pole Air Break Switch (Center Break)',
+    '3-Pole Disconnecting Switch (Double-side Break)',
+    '3-Pole Earthing Switch (Vertical Break)'
+  ];
   const EXT = ['jpg', 'jpeg', 'png', 'webp'];
 
   const svgForCore = core => 'assets/img/' + slug(core) + '.svg';
