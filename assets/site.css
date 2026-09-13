@@ -211,7 +211,9 @@ img{max-width:100%;display:block}
 /* ---------- หน้ารายละเอียดสินค้า ---------- */
 .detail{display:grid;grid-template-columns:44% 1fr;gap:30px;align-items:start}
 .detail .shot{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--tint)}
-.detail .shot img{width:100%;display:block}
+/* ต้องมี height:auto เพราะแอตทริบิวต์ height ใน <img> เป็น presentational hint
+   ถ้าไม่ใส่ ความสูงจะถูกล็อกไว้ตามแอตทริบิวต์ ทำให้ภาพถูกยืดผิดสัดส่วน */
+.detail .shot img{width:100%;height:auto;display:block}
 .detail h1{font-size:clamp(1.3rem,2.6vw,1.9rem);color:var(--blue-dark);line-height:1.35}
 .detail .tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .detail .lead{color:var(--muted);margin-top:12px;font-size:.95rem}
