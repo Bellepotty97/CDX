@@ -111,7 +111,7 @@ function renderProduct(r) {
         ${sp.length ? '' : `<p style="color:var(--muted);font-size:.86rem;margin-top:12px">
           พิกัดทางไฟฟ้าของรุ่นนี้ระบุอยู่ในชื่อรุ่น สอบถามรายละเอียดเพิ่มเติมได้จากฝ่ายขาย</p>`}
         <div class="cta">
-          <a class="btn btn--orange" href="quote.html?i=${r.i}">ขอราคาและกำหนดส่งมอบ</a>
+          <a class="btn btn--orange" href="quote.html?i=${r.i}">ขอราคา</a>
           <a class="btn btn--line" href="products.html?core=${encodeURIComponent(r.core)}">ดูสินค้าอื่นในกลุ่มนี้</a>
         </div>
         <p style="color:var(--muted);font-size:.84rem;margin-top:16px">
