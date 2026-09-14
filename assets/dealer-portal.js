@@ -15,7 +15,7 @@ function session() {
   try { return sessionStorage.getItem('pem_dealer_session') || localStorage.getItem('pem_dealer_session'); }
   catch (_) { return null; }
 }
-if (session() !== D.demoAccount.user) { location.replace('dealer.html#tab-login'); return; }
+if (session() !== D.demoAccount.user) { location.replace('dealer-login.html'); return; }
 
 const ME    = D.demoAccount;
 const GROUP = D.groupById(ME.groupId);
@@ -26,7 +26,7 @@ $('#whoCompany').textContent = ME.company;
 $('#whoMeta').innerHTML = `${esc(ME.code)} · ${esc(GROUP.name)} · ${esc(TIER.id)} ${esc(TIER.name)}`;
 $('#logout').addEventListener('click', () => {
   try { sessionStorage.removeItem('pem_dealer_session'); localStorage.removeItem('pem_dealer_session'); } catch (_) {}
-  location.href = 'dealer.html';
+  location.href = 'dealer-login.html';
 });
 
 /* ---------------- ราคาของคู่ค้ารายนี้ ---------------- */

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เข้าสู่ระบบตัวแทนจำหน่าย | PEM Dealer Management</title>
+<meta name="description" content="เข้าสู่ระบบ Dealer Management Platform สำหรับตัวแทนจำหน่ายสินค้า PEM">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dealer.css">
+<style>
+/* หน้านี้เป็นหน้าเข้าสู่ระบบแยกของตัวแทนจำหน่าย จัดวางแบบ overlay
+   คือฉากหลังหรี่ลงและมีการ์ดลอยอยู่กลางจอ ปิดได้ด้วยปุ่มกากบาท ปุ่ม Esc
+   หรือคลิกนอกการ์ด แล้วกลับไปหน้าเดิมที่ผู้ใช้มา */
+body{background:var(--blue-deep)}
+
+/* ---------- ฉากหลัง ---------- */
+/* ไล่ชั้นภาพเหมือนหน้าแรก ถ้าไฟล์ไหนไม่มีจะตกไปใช้ชั้นถัดไปเอง */
+.ovlbg{position:fixed;inset:0;z-index:0;
+  background-color:var(--blue-deep);
+  background-image:
+    linear-gradient(180deg,rgba(6,42,75,.86),rgba(6,42,75,.94)),
+    url("assets/hero-home.jpg"),
+    url("assets/hero-home.jpeg"),
+    url("assets/hero-home.png"),
+    url("assets/hero-home.webp");
+  background-size:cover;background-position:center;background-repeat:no-repeat}
+
+/* ---------- ตัว overlay ---------- */
+.ovl{position:fixed;inset:0;z-index:2;display:grid;place-items:center;padding:22px;overflow:auto}
+/* พื้นที่นอกการ์ด กดแล้วปิด */
+.ovlclose{position:fixed;inset:0;z-index:1;border:0;background:transparent;cursor:pointer;display:block}
+
+.lcard{position:relative;z-index:2;width:100%;max-width:440px;background:var(--surface);
+  border-radius:12px;padding:30px 30px 26px;box-shadow:0 30px 70px rgba(0,0,0,.45);
+  animation:pop .22s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.lcard{animation:none}}
+
+.lcard .x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;
+  border:0;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center;
+  font-size:1.5rem;line-height:1}
+.lcard .x:hover{background:var(--tint);color:var(--ink)}
+
+.lhead{text-align:center;margin-bottom:22px}
+.lhead .mark{width:54px;height:54px;margin:0 auto 14px;border-radius:14px;background:var(--blue);
+  color:#fff;display:grid;place-items:center}
+.lhead h1{font-size:1.22rem;color:var(--blue-dark)}
+.lhead p{color:var(--muted);font-size:.9rem;margin-top:6px}
+
+.err{color:var(--bad);font-size:.88rem;margin-top:12px}
+.demo{background:#fdf3e0;border:1px solid #f0d8ae;border-radius:var(--r);padding:13px 15px;
+  font-size:.85rem;color:#7a4e00;margin-bottom:20px}
+.demo code{background:#fff;border:1px solid #e6d3ae;border-radius:4px;padding:1px 7px;font-weight:600}
+
+.lfoot{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.88rem;color:var(--muted);text-align:center}
+.lfoot a{color:var(--blue);font-weight:600}
+.lfoot a:hover{text-decoration:underline}
+.lback{display:block;text-align:center;margin-top:16px;color:#bcd6ea;font-size:.85rem;position:relative;z-index:2}
+.lback:hover{color:#fff;text-decoration:underline}
+
+@media (max-width:420px){
+  .ovl{padding:0;place-items:stretch}
+  .lcard{max-width:none;min-height:100%;border-radius:0;padding:56px 22px 30px;box-shadow:none}
+}
+</style>
+</head>
+<body>
+
+<div class="ovlbg" aria-hidden="true"></div>
+
+<div class="ovl">
+  <button class="ovlclose" id="ovlclose" type="button" tabindex="-1" aria-label="ปิดหน้าเข้าสู่ระบบ"></button>
+
+  <div class="lcard" role="dialog" aria-modal="true" aria-labelledby="loginTitle" id="lcard">
+    <button class="x" id="closeBtn" type="button" aria-label="ปิดหน้าเข้าสู่ระบบ">&times;</button>
+
+    <div class="lhead">
+      <div class="mark"><span data-icon="handshake" data-icon-size="28"></span></div>
+      <h1 id="loginTitle">เข้าสู่ระบบตัวแทนจำหน่าย</h1>
+      <p>Dealer Management Platform — สำหรับคู่ค้าที่ผ่านการตรวจสอบและได้รับบัญชีแล้ว</p>
+    </div>
+
+    <div class="demo">
+      บัญชีสาธิต — ผู้ใช้ <code>Dealer1</code> รหัสผ่าน <code>Password</code><br>
+      <span style="font-size:.8rem">ระบบจริงต้องยืนยันตัวตนที่ฝั่งเซิร์ฟเวอร์ หน้านี้ตรวจรหัสในเบราว์เซอร์เพื่อสาธิตเท่านั้น</span>
+    </div>
+
+    <form id="loginform" novalidate>
+      <label class="field"><span class="req">ชื่อผู้ใช้</span>
+        <input type="text" name="user" autocomplete="username" required></label>
+      <label class="field"><span class="req">รหัสผ่าน</span>
+        <input type="password" name="pass" autocomplete="current-password" required></label>
+      <label class="checkrow" style="margin-bottom:18px">
+        <input type="checkbox" name="remember"><span>จดจำการเข้าสู่ระบบบนเครื่องนี้</span></label>
+      <button class="btn btn--solid" type="submit" style="width:100%">เข้าสู่ระบบ</button>
+      <p class="err" id="loginerr" hidden role="alert"></p>
+    </form>
+
+    <p class="lfoot">ยังไม่มีบัญชี? <a href="dealer.html">สมัครเป็นตัวแทนจำหน่าย</a></p>
+  </div>
+
+  <a class="lback" href="precise-pcc-pem.html" id="homeLink">&larr; กลับไปหน้าเว็บไซต์</a>
+</div>
+
+<script src="assets/icons.js"></script>
+<script src="data/dealer-config.js"></script>
+<script src="assets/dealer-login.js"></script>
+</body>
+</html>

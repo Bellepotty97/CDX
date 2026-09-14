@@ -1,4 +1,5 @@
-/* หน้าสมัคร เข้าสู่ระบบ และมุมมองฝ่ายขาย
+/* หน้าสมัครเป็นตัวแทนจำหน่าย และมุมมองฝ่ายขาย
+   (หน้าเข้าสู่ระบบแยกไปอยู่ที่ dealer-login.html / assets/dealer-login.js)
    ทุกอย่างทำงานในเบราว์เซอร์เพื่อสาธิตขั้นตอน ยังไม่ได้เชื่อมกับระบบหลังบ้าน */
 (function () {
 'use strict';
@@ -11,7 +12,7 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;
 const baht = n => D.baht(Math.round(n));
 
 /* ---------------- แท็บ ---------------- */
-const TABS = [['tab-reg','panel-reg'], ['tab-sales','panel-sales'], ['tab-login','panel-login']];
+const TABS = [['tab-reg','panel-reg'], ['tab-sales','panel-sales']];
 function showTab(id) {
   TABS.forEach(([t, p]) => {
     const on = t === id;
@@ -22,7 +23,6 @@ function showTab(id) {
   window.scrollTo({ top: 0 });
 }
 TABS.forEach(([t]) => $('#' + t).addEventListener('click', () => showTab(t)));
-$('#gotoreg').addEventListener('click', e => { e.preventDefault(); showTab('tab-reg'); });
 if (TABS.some(([t]) => t === location.hash.slice(1))) showTab(location.hash.slice(1));
 
 /* ---------------- ประเภทผู้สมัคร : นิติบุคคล หรือ บุคคลธรรมดา ---------------- */
@@ -296,19 +296,6 @@ $('#regform').addEventListener('submit', e => {
     ref, consentAt:new Date().toISOString(), consentVersion:'2569-09', source:location.href, ...d });
 });
 
-/* ---------------- เข้าสู่ระบบ (สาธิต) ---------------- */
-$('#loginform').addEventListener('submit', e => {
-  e.preventDefault();
-  const f = e.target, err = $('#loginerr');
-  if (f.user.value.trim() === D.demoAccount.user && f.pass.value === D.demoAccount.pass) {
-    const store = f.remember.checked ? localStorage : sessionStorage;
-    try { store.setItem('pem_dealer_session', D.demoAccount.user); } catch (_) {}
-    location.href = 'dealer-portal.html';
-  } else {
-    err.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (บัญชีสาธิตคือ Dealer1 / Password)';
-    err.hidden = false;
-  }
-});
 
 /* ---------------- เริ่มต้น ---------------- */
 drawAppCard();

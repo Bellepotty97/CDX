@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>สนใจสมัครเป็น Dealer ของเรา | PEM Dealer Management</title>
-<meta name="description" content="ลงทะเบียนเป็นตัวแทนจำหน่ายสินค้า PEM และเข้าสู่ระบบ Dealer Management Platform">
+<meta name="description" content="ลงทะเบียนเป็นตัวแทนจำหน่ายสินค้า PEM เพื่อเข้าใช้งาน Dealer Management Platform">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,6 +35,9 @@
 .tab[aria-selected=true]{color:var(--blue-dark);border-bottom-color:var(--orange)}
 .tab svg{flex:none}
 .panel[hidden]{display:none}
+/* แถวลิงก์เข้าสู่ระบบ วางคู่กับแถบแท็บ */
+.haveacct{display:flex;align-items:center;gap:12px;justify-content:flex-end;flex-wrap:wrap;
+  font-size:.9rem;color:var(--muted);margin:-14px 0 24px}
 main{padding-block:34px 60px}
 
 /* ---------- ฟอร์มสมัคร ---------- */
@@ -159,9 +162,13 @@ main{padding-block:34px 60px}
       <span data-icon="quote" data-icon-size="18"></span>Dealer Registration</button>
     <button class="tab" role="tab" id="tab-sales" aria-controls="panel-sales" aria-selected="false">
       <span data-icon="briefcase" data-icon-size="18"></span>ขั้นตอนฝ่ายขาย</button>
-    <button class="tab" role="tab" id="tab-login" aria-controls="panel-login" aria-selected="false">
-      <span data-icon="handshake" data-icon-size="18"></span>เข้าสู่ระบบ</button>
   </div>
+  <!-- เข้าสู่ระบบแยกไปหน้า dealer-login.html ซึ่งจัดวางแบบ overlay -->
+  <p class="haveacct">
+    มีบัญชีตัวแทนจำหน่ายแล้ว?
+    <a class="btn btn--line btn--sm" href="dealer-login.html">
+      <span data-icon="login" data-icon-size="16"></span>เข้าสู่ระบบ</a>
+  </p>
 
   <!-- ============ 1 : ผู้สมัครกรอกใบสมัคร ============ -->
   <section class="panel" id="panel-reg" role="tabpanel" aria-labelledby="tab-reg">
@@ -384,35 +391,6 @@ main{padding-block:34px 60px}
     </div>
   </section>
 
-  <!-- ============ เข้าสู่ระบบ ============ -->
-  <section class="panel" id="panel-login" role="tabpanel" aria-labelledby="tab-login" hidden>
-    <div class="loginwrap">
-      <div class="card">
-        <h2><span data-icon="handshake"></span>เข้าสู่ระบบตัวแทนจำหน่าย</h2>
-        <p>สำหรับคู่ค้าที่ผ่านการตรวจสอบและได้รับบัญชีแล้ว</p>
-
-        <div class="demo" style="margin-top:20px">
-          บัญชีสาธิต — ผู้ใช้ <code>Dealer1</code> รหัสผ่าน <code>Password</code><br>
-          <span style="font-size:.82rem">ระบบจริงต้องยืนยันตัวตนที่ฝั่งเซิร์ฟเวอร์ หน้านี้ตรวจรหัสในเบราว์เซอร์เพื่อสาธิตเท่านั้น</span>
-        </div>
-
-        <form id="loginform" novalidate>
-          <label class="field"><span class="req">ชื่อผู้ใช้</span>
-            <input type="text" name="user" autocomplete="username" required></label>
-          <label class="field"><span class="req">รหัสผ่าน</span>
-            <input type="password" name="pass" autocomplete="current-password" required></label>
-          <label class="checkrow" style="margin-bottom:18px">
-            <input type="checkbox" name="remember"><span>จดจำการเข้าสู่ระบบบนเครื่องนี้</span></label>
-          <button class="btn btn--solid" type="submit" style="width:100%">เข้าสู่ระบบ</button>
-          <p class="err" id="loginerr" hidden></p>
-        </form>
-
-        <p style="margin-top:18px;font-size:.88rem;color:var(--muted)">
-          ยังไม่มีบัญชี? <a href="#" id="gotoreg" style="color:var(--blue);font-weight:600">สมัครเป็นตัวแทนจำหน่าย</a>
-        </p>
-      </div>
-    </div>
-  </section>
 </main>
 
 <script src="assets/icons.js"></script>
