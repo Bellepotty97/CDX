@@ -149,6 +149,10 @@ img{max-width:100%;display:block}
 }
 @media (prefers-reduced-motion:reduce){.fab{transition:none}.fab:hover{transform:none}}
 
+/* เผื่อที่ให้ header ที่ปักอยู่ด้านบน เวลาเลื่อนไปยังสมอในหน้า เช่น #contact
+   หัวข้อของ section จะได้ไม่ถูก header ทับ */
+.sec[id],.searchbar[id]{scroll-margin-top:88px}
+
 /* ---------- catalog ---------- */
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px}
 .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-family:inherit;

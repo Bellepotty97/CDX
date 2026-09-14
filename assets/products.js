@@ -193,10 +193,14 @@ document.addEventListener('click', e => {
     return;
   }
   const top = e.target.closest('a.top[href]');
-  if (top && !top.dataset.core &&
-      new URL(top.href, location.href).pathname === location.pathname) {
-    e.preventDefault(); term = ''; $('#q').value = '';
-    pick('all'); window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (top && !top.dataset.core) {
+    const u = new URL(top.href, location.href);
+    // เฉพาะเมนู "สินค้าและบริการ" ที่ชี้มาหน้านี้ตรง ๆ เท่านั้นที่ให้ล้างตัวกรอง
+    // ลิงก์ที่เป็นสมอในหน้า เช่น #contact ต้องปล่อยให้เบราว์เซอร์เลื่อนไปเอง
+    if (u.pathname === location.pathname && !u.hash) {
+      e.preventDefault(); term = ''; $('#q').value = '';
+      pick('all'); window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 });
 // ลิงก์ที่ชี้ไป #services ให้เลือกกลุ่มบริการแทนการกระโดดหาสมอที่ไม่มีแล้ว
