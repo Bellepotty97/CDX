@@ -128,9 +128,27 @@ img{max-width:100%;display:block}
 .owner{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
   border-radius:999px;padding:6px 14px;font-size:.84rem;color:var(--muted);margin-bottom:14px}
 .owner b{color:var(--blue-dark);font-weight:600}
-.searchbar{display:flex;gap:10px;max-width:560px;margin:0 auto 28px}
+.searchbar{display:flex;gap:10px;max-width:560px;margin:0 0 22px}  /* ชิดซ้ายให้ตรงกับขอบซ้ายของกล่องประเภทสินค้า */
 .searchbar input{flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);font-family:inherit;font-size:.95rem}
 .searchbar input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(15,109,180,.15)}
+/* ---------- ปุ่มลอยเข้าสู่ระบบ Dealer ---------- */
+/* อยู่มุมขวาล่างของหน้าจอตลอดเวลา เป็นทางลัดให้ตัวแทนจำหน่ายเข้าสู่ระบบ */
+.fab{position:fixed;right:22px;bottom:22px;z-index:60;display:inline-flex;align-items:center;gap:9px;
+  padding:12px 20px;border-radius:999px;background:var(--orange);color:#fff;font-weight:600;font-size:.92rem;
+  box-shadow:0 10px 26px rgba(0,0,0,.24);border:1px solid rgba(255,255,255,.28);
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.fab:hover,.fab:focus-visible{background:#dd7014;transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.3)}
+.fab:focus-visible{outline:3px solid rgba(255,255,255,.85);outline-offset:2px}
+.fab .ico{width:20px;height:20px;flex:none}
+.fab .lbl{white-space:nowrap}
+.fab .fabsub{display:block;font-weight:400;font-size:.72rem;opacity:.92;margin-top:1px;letter-spacing:.01em}
+@media (max-width:560px){
+  /* จอเล็กเหลือเฉพาะไอคอน กันไม่ให้บังเนื้อหา */
+  .fab{right:14px;bottom:14px;padding:14px;gap:0}
+  .fab .lbl{position:absolute;left:-9999px}
+}
+@media (prefers-reduced-motion:reduce){.fab{transition:none}.fab:hover{transform:none}}
+
 /* ---------- catalog ---------- */
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px}
 .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-family:inherit;
@@ -140,6 +158,9 @@ img{max-width:100%;display:block}
 .chip.is-on{background:var(--blue);border-color:var(--blue);color:#fff}
 .chip.is-on b{color:#cfe6f8}
 .catmeta{text-align:center;color:var(--muted);font-size:.88rem;margin-bottom:18px}
+/* ปุ่มแบบลิงก์ในข้อความ เช่น ขยายการค้นหาไปทุกประเภท */
+.linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--blue);font-weight:600;cursor:pointer;text-decoration:underline}
+.linkbtn:hover{color:var(--blue-dark)}
 .plist{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .prow{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;
   display:flex;align-items:center;gap:14px}

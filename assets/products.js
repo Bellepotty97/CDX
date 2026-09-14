@@ -65,13 +65,19 @@ function pick(key) {
 }
 
 /* ---------------- สิ่งที่จะแสดง ---------------- */
+const hit = (r, t) =>
+  (r.name + ' ' + r.code + ' ' + r.core + ' ' + r.type + ' ' + r.biz).toLowerCase().includes(t);
 function products() {
   const t = term.trim().toLowerCase();
   return ROWS.filter(r => {
     if (sel.kind === 'core' && r.core !== sel.value) return false;
-    if (!t) return true;
-    return (r.name + ' ' + r.code + ' ' + r.core + ' ' + r.type + ' ' + r.biz).toLowerCase().includes(t);
+    return !t || hit(r, t);
   });
+}
+// จำนวนที่ตรงคำค้นเมื่อไม่จำกัดประเภท ใช้บอกผู้ใช้ว่ายังมีผลลัพธ์ในประเภทอื่น
+function allMatches() {
+  const t = term.trim().toLowerCase();
+  return t ? ROWS.filter(r => hit(r, t)).length : ROWS.length;
 }
 function services() {
   return sel.kind === 'svc' ? S.filter(s => s.id === sel.value) : S;
@@ -124,15 +130,32 @@ function render() {
   }
 
   const m = products();
+  const q = term.trim();
   const title = sel.kind === 'core' ? sel.value : 'สินค้าทั้งหมด';
+  // ค้นหาขณะเลือกประเภทอยู่จะจำกัดผลเฉพาะประเภทนั้น จึงต้องบอกผู้ใช้ให้ชัด
+  // และเปิดทางให้ขยายไปค้นทุกประเภทได้ในคลิกเดียว
+  const scoped = sel.kind === 'core' && q;
+  const outside = scoped ? allMatches() - m.length : 0;
+  const wider = outside > 0
+    ? ` <button class="linkbtn" type="button" id="searchAll">ค้นทุกประเภท (อีก ${outside} รายการ)</button>`
+    : '';
   head.innerHTML = `
     <div><h2><span class="ico">${I.svg(sel.kind === 'core' ? I.byCore(sel.value) : 'box', 20)}</span>${esc(title)}</h2>
-      <p id="catmeta">${m.length ? `พบ ${m.length} รายการ` + (term.trim() ? ` จากคำค้น “${esc(term.trim())}”` : '')
-                                 : 'ไม่พบสินค้าที่ตรงกับคำค้น'}</p></div>`;
+      <p id="catmeta">${m.length ? `พบ ${m.length} รายการ` + (q ? ` จากคำค้น “${esc(q)}”` : '')
+                                 : `ไม่พบสินค้าที่ตรงกับคำค้น “${esc(q)}”`}${
+        scoped ? ` — ค้นเฉพาะใน ${esc(sel.value)}${wider}` : ''}</p></div>`;
   list.innerHTML = m.length
     ? m.slice(0, shown).map(productCard).join('')
-    : `<div class="emptymsg" style="grid-column:1/-1">ไม่พบสินค้าที่ตรงกับคำค้น ลองพิมพ์คำอื่น
+    : `<div class="emptymsg" style="grid-column:1/-1">ไม่พบสินค้าที่ตรงกับคำค้น${q ? ` “${esc(q)}”` : ''}${
+         scoped && outside > 0
+           ? ` ในประเภท ${esc(sel.value)} แต่พบ ${outside} รายการในประเภทอื่น
+               <button class="linkbtn" type="button" id="searchAllEmpty">ค้นทุกประเภท</button>`
+           : ' ลองพิมพ์คำอื่น'}
          หรือ<a href="#contact" style="color:var(--blue);font-weight:600"> ติดต่อฝ่ายขายโดยตรง</a></div>`;
+  ['#searchAll', '#searchAllEmpty'].forEach(id => {
+    const b = $(id);
+    if (b) b.addEventListener('click', () => pick('all'));
+  });
   more.hidden = m.length <= shown;
   if (!more.hidden) more.textContent = `แสดงเพิ่ม (เหลืออีก ${m.length - shown})`;
   document.title = (sel.kind === 'core' ? sel.value + ' — ' : '') + BASE_TITLE;

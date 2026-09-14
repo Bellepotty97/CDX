@@ -28,6 +28,7 @@ window.PEM_ICON = (function () {
     handshake:'<path d="M8 12l2.5 2.5a1.8 1.8 0 0 0 2.5 0L18 10"/><path d="M3 9l4-4 4 3h4l4 4"/><path d="M3 9v5l4 4"/><path d="M21 9v5l-3 3"/>',
     support:'<path d="M21 12a8 8 0 1 1-3.2-6.4"/><path d="M12 8v5"/><circle cx="12" cy="16" r=".7" fill="currentColor" stroke="none"/>',
     search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+    login:'<path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/><path d="M15 8l4 4-4 4"/><path d="M19 12H9"/>',
     box:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
     // ---------- พอร์ทัลคู่ค้า ----------
     target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8" fill="currentColor" stroke="none"/>',
