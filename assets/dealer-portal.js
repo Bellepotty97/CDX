@@ -92,11 +92,14 @@ const MENUS = [
   { id:'shop',     n:2, ic:'cart',        name:'สั่งซื้อสินค้า' },
   { id:'price',    n:3, ic:'tag',         name:'Check Pricelist' },
   { id:'orders',   n:4, ic:'truck',       name:'Order Status' },
-  { id:'leads',    n:5, ic:'briefcase',   name:'แจ้งงาน / ส่งต่อโอกาสขาย' },
+  // ปิดเมนูแจ้งงาน / ส่งต่อโอกาสขายไว้ก่อนตามที่ฝ่ายขายขอ
+  // โค้ดของหน้านี้ (viewLeads, drawLeads, LEADS) ยังอยู่ครบ เมื่อจะเปิดใช้อีกครั้ง
+  // ให้ลบ off:true บรรทัดนี้ออกอย่างเดียว
+  { id:'leads',    n:5, ic:'briefcase',   name:'แจ้งงาน / ส่งต่อโอกาสขาย', off:true },
   { id:'training', n:6, ic:'training',    name:'Training' },
   { id:'appoint',  n:7, ic:'certificate', name:'หนังสือแต่งตั้ง', peaOnly:true },
   { id:'reward',   n:8, ic:'gift',        name:'Rewards' },
-].filter(m => !m.peaOnly || isPEA);
+].filter(m => !m.off && (!m.peaOnly || isPEA));
 
 function drawNav() {
   $('#side').innerHTML = '<h4>เมนู</h4>' + MENUS.map(m => `
@@ -927,8 +930,10 @@ function viewReward() {
 
   <div class="card">
     <h2>${PEM_ICON.svg('coin', 20)} Commission จากงานที่แจ้งเข้ามา</h2>
-    <p>ค่าตอบแทนจากงานที่ท่านส่งต่อให้ PEM ในเมนู <b>แจ้งงาน / ส่งต่อโอกาสขาย</b>
-       จ่ายหลังลูกค้าชำระเงินงวดสุดท้าย และนับรวมเป็นคะแนนสะสมด้วยอัตราเดียวกับยอดซื้อ</p>
+    <p>ค่าตอบแทนจากงานที่ท่านส่งต่อให้ PEM จ่ายหลังลูกค้าชำระเงินงวดสุดท้าย
+       และนับรวมเป็นคะแนนสะสมด้วยอัตราเดียวกับยอดซื้อ
+       <br><span style="color:var(--muted);font-size:.88rem">ระหว่างนี้แจ้งงานผ่านฝ่ายขายที่ดูแลท่านโดยตรง
+       เมนูแจ้งงานในระบบจะเปิดให้ใช้ภายหลัง</span></p>
 
     <div class="kpirow" style="grid-template-columns:repeat(3,1fr);margin:18px 0 4px">
       <div class="kpi"><div class="lab">จ่ายแล้วปีนี้</div>
