@@ -10,6 +10,10 @@ const C = window.PEM_CATALOG, S = window.PEM_SERVICES, L = window.PEM_LIB, I = w
 const esc = L.esc, $ = s => document.querySelector(s);
 const p = new URLSearchParams(location.search);
 
+// quote.html?doc=cert คือมาจากปุ่ม "ขอเอกสารรับรอง" ในหน้ารายละเอียดสินค้า
+// ใช้เปลี่ยนหัวข้อหน้าและเติมข้อความในช่องรายละเอียดให้ ผู้ใช้ไม่ต้องพิมพ์เอง
+const askDoc = p.get('doc') === 'cert';
+
 /* ---------------- รายการที่ขอราคา ---------------- */
 let item = null;                       // { kind, title, sub, img, fields[] , interest }
 const sid = p.get('s');
@@ -64,11 +68,21 @@ function drawSide() {
     </div>`;
 }
 
+const DOC_MSG = 'ขอสำเนาเอกสารรับรองของรายการนี้ เช่น ใบรับรอง Made in Thailand (MiT), '
+  + 'ใบอนุญาต มอก. จาก สมอ. และรายงานผลทดสอบ (Type Test) เพื่อใช้ประกอบการพิจารณา';
+
 /* ---------------- ฟอร์ม ---------------- */
 function drawForm() {
   $('#crumb').innerHTML =
     `<a href="precise-pcc-pem.html">หน้าแรก</a> › <a href="products.html">สินค้าและบริการ</a>` +
-    (item ? ` › <a href="${item.back}">${esc(item.title.slice(0, 40))}</a>` : '') + ` › ขอใบเสนอราคา`;
+    (item ? ` › <a href="${item.back}">${esc(item.title.slice(0, 40))}</a>` : '') +
+    (askDoc ? ` › ขอเอกสารรับรอง` : ` › ขอใบเสนอราคา`);
+  if (askDoc) {
+    const h = document.querySelector('.qhead h1'), sub = document.querySelector('.qhead h1 + p');
+    if (h) h.lastChild.textContent = 'ขอเอกสารรับรอง';
+    if (sub) sub.textContent = 'กรอกข้อมูลเพื่อให้ฝ่ายขายส่งสำเนาใบรับรองและรายงานผลทดสอบให้ทางอีเมล '
+      + 'ทีมงานติดต่อกลับภายใน 2 วันทำการ';
+  }
 
   $('#formcol').innerHTML = `
   <form class="fbox" id="qform" novalidate>
@@ -116,7 +130,7 @@ function drawForm() {
       <legend>รายละเอียดเพิ่มเติม</legend>
       <label class="field"><span>รายละเอียดงานหรือข้อกำหนดเฉพาะ</span>
         <textarea name="description" data-odoo-field="description"
-          placeholder="พิกัดที่ต้องการ มาตรฐานที่ต้องผ่าน เงื่อนไขการส่งมอบ หรือข้อมูลอื่นที่ช่วยให้เสนอราคาได้ตรง"></textarea></label>
+          placeholder="พิกัดที่ต้องการ มาตรฐานที่ต้องผ่าน เงื่อนไขการส่งมอบ หรือข้อมูลอื่นที่ช่วยให้เสนอราคาได้ตรง">${askDoc ? esc(DOC_MSG) : ''}</textarea></label>
       <label class="field"><span>ช่องทางที่สะดวกให้ติดต่อกลับ</span>
         <select name="prefer">
           <option>โทรศัพท์</option><option>อีเมล</option><option>LINE</option>

@@ -6,6 +6,7 @@
 'use strict';
 
 const C = window.PEM_CATALOG, S = window.PEM_SERVICES, L = window.PEM_LIB, I = window.PEM_ICON;
+const K = window.PEM_CERT;
 const esc = L.esc, $ = s => document.querySelector(s);
 const p = new URLSearchParams(location.search);
 
@@ -118,6 +119,7 @@ function renderProduct(r) {
           ข้อมูลอ้างอิงจาก Price List ประกาศใช้ 1 มิถุนายน 2569 · ไม่แสดงราคาบนหน้าเว็บ</p>
       </div>
     </div>
+    ${certSection(r)}
     ${related.length ? `<div class="related">
       <h2>สินค้าอื่นในกลุ่ม ${esc(r.core)}</h2>
       <div class="cardgrid">${related.map(x => `
@@ -130,6 +132,64 @@ function renderProduct(r) {
             <p class="go"><a class="btn btn--line" href="product.html?i=${x.i}">ดูรายละเอียด</a></p></div>
         </article>`).join('')}</div>
     </div>` : ''}`;
+}
+
+/* ---------------- เอกสารที่เกี่ยวข้องและมาตรฐานรับรอง ---------------- */
+// แสดงมาตรฐานที่สินค้ากลุ่มนี้ใช้ พร้อมการรับรองระดับบริษัท
+// ถ้ายังไม่มีไฟล์ใบรับรองจริง (ฟิลด์ file ว่าง) จะขึ้นปุ่มขอเอกสารจากฝ่ายขายแทน
+function certSection(r) {
+  if (!K) return '';
+  const std = K.forCore(r.core);
+  const tis = std.filter(x => x.kind === 'tis');
+
+  const stdRow = x => `
+    <li>
+      <span class="stdtag is-${x.kind}">${esc(K.KIND[x.kind].label)}</span>
+      <span class="stdcode">${esc(x.code)}</span>
+      ${x.note ? `<span class="stdnote">${esc(x.note)}</span>` : ''}
+    </li>`;
+
+  const certCard = c => `
+    <li class="certcard is-${esc(c.tone)}">
+      <span class="ico">${I.svg(c.icon, 20)}</span>
+      <div>
+        <b>${esc(c.name)}</b>
+        ${c.by ? `<span>${esc(c.by)}</span>` : ''}
+        ${c.note ? `<span>${esc(c.note)}</span>` : ''}
+        ${c.no ? `<span>เลขที่ ${esc(c.no)}</span>` : ''}
+      </div>
+      ${c.file ? `<a class="btn btn--line btn--sm" href="${esc(c.file)}" target="_blank" rel="noopener">เปิดเอกสาร</a>` : ''}
+    </li>`;
+
+  return `
+  <section class="certsec" aria-labelledby="certTitle">
+    <h2 id="certTitle"><span class="ico">${I.svg('certificate', 20)}</span>เอกสารที่เกี่ยวข้อง</h2>
+    <p class="certlead">สินค้ากลุ่ม ${esc(r.core)} ออกแบบ ผลิต และทดสอบตามมาตรฐานด้านล่างนี้
+      ${tis.length ? 'รวมถึงมาตรฐานผลิตภัณฑ์อุตสาหกรรม (มอก.) ที่กำกับโดย สมอ.' : ''}</p>
+
+    <div class="certgrid">
+      <div class="certbox">
+        <h3>การรับรองระดับบริษัท</h3>
+        <ul class="certlist">${K.company.map(certCard).join('')}</ul>
+      </div>
+
+      <div class="certbox">
+        <h3>มาตรฐานของสินค้ากลุ่มนี้</h3>
+        ${std.length
+          ? `<ul class="stdlist">${std.map(stdRow).join('')}</ul>`
+          : `<p class="certnote">มาตรฐานเฉพาะรุ่นนี้สอบถามได้จากฝ่ายขาย</p>`}
+        <h3 style="margin-top:20px">ผลทดสอบ (Type Test) จากห้องทดสอบ</h3>
+        <p class="certlabs">${K.labs.map(l => `${esc(l.name)} <span>(${esc(l.place)})</span>`).join(' · ')}</p>
+      </div>
+    </div>
+
+    <div class="certask">
+      <p>ต้องการสำเนาใบรับรองฉบับจริง เช่น ใบรับรอง Made in Thailand, ใบอนุญาต มอก.
+         หรือรายงานผลทดสอบของรุ่นนี้ แจ้งฝ่ายขายเพื่อจัดส่งให้ทางอีเมล</p>
+      <a class="btn btn--solid" href="quote.html?i=${r.i}&amp;doc=cert">
+        <span class="ico">${I.svg('quote', 18)}</span>ขอเอกสารรับรอง</a>
+    </div>
+  </section>`;
 }
 
 /* ---------------- เริ่มต้น ---------------- */

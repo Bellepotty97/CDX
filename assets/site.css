@@ -131,6 +131,48 @@ img{max-width:100%;display:block}
 .searchbar{display:flex;gap:10px;max-width:560px;margin:0 0 22px}  /* ชิดซ้ายให้ตรงกับขอบซ้ายของกล่องประเภทสินค้า */
 .searchbar input{flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);font-family:inherit;font-size:.95rem}
 .searchbar input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(15,109,180,.15)}
+/* ---------- เอกสารที่เกี่ยวข้องในหน้ารายละเอียดสินค้า ---------- */
+.certsec{margin-top:44px;padding-top:30px;border-top:1px solid var(--line)}
+.certsec>h2{font-size:1.2rem;color:var(--blue-dark);display:flex;align-items:center;gap:10px}
+.certsec>h2 .ico{width:34px;height:34px;border-radius:8px;background:var(--tint);color:var(--blue);
+  display:grid;place-items:center;flex:none}
+.certlead{color:var(--muted);font-size:.9rem;margin-top:8px}
+
+.certgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;align-items:start}
+.certbox{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.certbox h3{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+
+.certlist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.certcard{display:flex;align-items:flex-start;gap:12px;padding:11px 13px;border-radius:var(--r);
+  border:1px solid var(--line);background:var(--tint)}
+.certcard .ico{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;flex:none;
+  background:#fff;color:var(--blue);border:1px solid var(--line)}
+.certcard.is-mit .ico{background:var(--orange);color:#fff;border-color:var(--orange)}
+.certcard b{display:block;font-size:.92rem;color:var(--ink)}
+.certcard span{display:block;font-size:.8rem;color:var(--muted);line-height:1.5}
+.certcard .btn{margin-left:auto;flex:none;align-self:center}
+
+.stdlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.stdlist li{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;
+  padding-bottom:8px;border-bottom:1px dashed var(--line)}
+.stdlist li:last-child{border-bottom:0;padding-bottom:0}
+.stdtag{flex:none;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:999px;
+  background:#eef1f4;color:var(--muted)}
+.stdtag.is-tis{background:var(--orange);color:#fff}
+.stdtag.is-iec{background:var(--blue);color:#fff}
+.stdcode{font-weight:600;font-size:.92rem;color:var(--ink)}
+.stdnote{font-size:.82rem;color:var(--muted)}
+.certnote{font-size:.87rem;color:var(--muted)}
+.certlabs{font-size:.88rem;color:var(--ink);line-height:1.9}
+.certlabs span{color:var(--muted);font-size:.82rem}
+
+.certask{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:18px;
+  background:var(--tint);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px}
+.certask p{font-size:.88rem;color:var(--muted);flex:1;min-width:260px}
+.certask .btn{flex:none}
+
+@media (max-width:860px){.certgrid{grid-template-columns:1fr}}
+
 /* ---------- ปุ่มลอยเข้าสู่ระบบ Dealer ---------- */
 /* อยู่มุมขวาล่างของหน้าจอตลอดเวลา เป็นทางลัดให้ตัวแทนจำหน่ายเข้าสู่ระบบ */
 .fab{position:fixed;right:22px;bottom:22px;z-index:60;display:inline-flex;align-items:center;gap:9px;
